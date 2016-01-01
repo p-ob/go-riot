@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	BaseUrl                 = "https://%s.api.pvp.net/api/lol/%s/"
+	BaseUrl                 = "https://%s.api.pvp.net/api/lol/%s/%s?"
 	SummonersByNameEndpoint = "v1.4/summoner/by-name/%s"
 	SummonersByIdEndpoint   = "v1.4/summoner/%s"
 )
@@ -33,9 +33,7 @@ type ApiInfo struct {
 
 // public methods
 func (api *ApiInfo) GetSummoners(summonerNames ...string) []Summoner {
-	url := BaseUrl + SummonersByNameEndpoint
-	url = fmt.Sprintf(url, api.Region, api.Region, strings.Join(summonerNames, ","))
-	url += "?api_key=" + api.Key
+	url := api.constructUrl(SummonersByNameEndpoint, summonerNames...)
 
 	summonersMap := make(map[string]Summoner)
 	err := makeRequest(url, &summonersMap)
@@ -62,9 +60,7 @@ func (api *ApiInfo) GetSummonersById(summonerIds ...int) []Summoner {
 		summonerIdsStrings = append(summonerIdsStrings, strconv.Itoa(summonerId))
 	}
 
-	url := BaseUrl + SummonersByIdEndpoint
-	url = fmt.Sprintf(url, api.Region, api.Region, strings.Join(summonerIdsStrings, ","))
-	url += "?api_key=" + api.Key
+	url := api.constructUrl(SummonersByIdEndpoint, summonerIdsStrings...)
 	summonersMap := make(map[string]Summoner)
 	err := makeRequest(url, &summonersMap)
 
@@ -104,4 +100,12 @@ func makeRequest(url string, v interface{}) error {
 	json.Unmarshal(body, v)
 
 	return nil
+}
+
+func (api *ApiInfo) constructUrl(endpoint string, args ...string) string {
+	url := fmt.Sprintf(BaseUrl, api.Region, api.Region, endpoint)
+	url = fmt.Sprintf(url, strings.Join(args, ","))
+	url += "?api_key=" + api.Key
+
+	return url
 }
