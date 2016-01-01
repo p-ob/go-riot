@@ -16,15 +16,19 @@ var (
 	SummonersByIdEndpoint   = "v1.4/summoner/%s"
 )
 
+type RiotError struct {
+	StatusCode int
+	Reason     string
+}
+
+func (err RiotError) Error() string {
+	return fmt.Sprintf("Http Status: %d; %s", err.StatusCode, err.Reason)
+}
+
 type ApiInfo struct {
 	Key       string `api key given by https://developer.riotgames.com`
 	Region    string `region to be queried against`
 	RateLimit int    `rate limit given by https://developer.riotgames.com`
-}
-
-type RiotError struct {
-	StatusCode int
-	Reason     string
 }
 
 // public methods
@@ -100,8 +104,4 @@ func makeRequest(url string, v interface{}) error {
 	json.Unmarshal(body, v)
 
 	return nil
-}
-
-func (err RiotError) Error() string {
-	return fmt.Sprintf("Http Status: %d; %s", err.StatusCode, err.Reason)
 }
