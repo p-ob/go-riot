@@ -14,6 +14,9 @@ func main() {
 	}
 	apiKey := string(fileData)
 	a := ApiInfo{apiKey, "na", 10}
-	data := a.GetSummoners("drunk7irishman", "rastarockit", "ohsnap62")
-	fmt.Printf("Summoners by name: %+v\n", data)
+	summoners := a.GetSummoners("drunk7irishman", "rastarockit", "ohsnap62")
+	fmt.Printf("Summoners by name: %+v\n", summoners)
+	sId := summoners[0].Id
+	matchList := a.GetRankedMatchList(sId)
+	fmt.Printf("Match list for %d: %+v\n", sId, matchList)
 }

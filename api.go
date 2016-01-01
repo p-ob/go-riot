@@ -14,6 +14,7 @@ var (
 	BaseUrl                 = "https://%s.api.pvp.net/api/lol/%s/%s?"
 	SummonersByNameEndpoint = "v1.4/summoner/by-name/%s"
 	SummonersByIdEndpoint   = "v1.4/summoner/%s"
+	MatchListEndpoint       = "v2.2/matchlist/by-summoner/%s"
 )
 
 type RiotError struct {
@@ -54,10 +55,10 @@ func (api *ApiInfo) GetSummoners(summonerNames ...string) []Summoner {
 	return summonersArray
 }
 
-func (api *ApiInfo) GetSummonersById(summonerIds ...int) []Summoner {
+func (api *ApiInfo) GetSummonersById(summonerIds ...int64) []Summoner {
 	var summonerIdsStrings []string
 	for _, summonerId := range summonerIds {
-		summonerIdsStrings = append(summonerIdsStrings, strconv.Itoa(summonerId))
+		summonerIdsStrings = append(summonerIdsStrings, strconv.FormatInt(summonerId, 10))
 	}
 
 	url := api.constructUrl(SummonersByIdEndpoint, summonerIdsStrings...)
@@ -78,6 +79,19 @@ func (api *ApiInfo) GetSummonersById(summonerIds ...int) []Summoner {
 	return summonersArray
 }
 
+func (api *ApiInfo) GetRankedMatchList(summonerId int64) MatchList {
+	url := api.constructUrl(MatchListEndpoint, strconv.FormatInt(summonerId, 10))
+
+	matchList := MatchList{}
+	err := makeRequest(url, &matchList)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return matchList
+}
+
 // private methods
 func makeRequest(url string, v interface{}) error {
 	resp, err := http.Get(url)
@@ -91,6 +105,8 @@ func makeRequest(url string, v interface{}) error {
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
+
+	//fmt.Println(string(body))
 	resp.Body.Close()
 
 	if err != nil {
@@ -105,7 +121,7 @@ func makeRequest(url string, v interface{}) error {
 func (api *ApiInfo) constructUrl(endpoint string, args ...string) string {
 	url := fmt.Sprintf(BaseUrl, api.Region, api.Region, endpoint)
 	url = fmt.Sprintf(url, strings.Join(args, ","))
-	url += "?api_key=" + api.Key
+	url += "api_key=" + api.Key
 
 	return url
 }
