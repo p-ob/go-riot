@@ -26,6 +26,7 @@ var (
 	RuneByIdEndpoint          = "v1.2/rune/%s"
 	SummonerSpellsEndpoint    = "v1.2/summoner-spell"
 	SummonerSpellByIdEndpoint = "v1.2/summoner-spell/%s"
+	RecentGamesEndpoint       = "v1.3/game/by-summoner/%s/recent"
 	//
 	StaticData = "static-data"
 )
@@ -116,6 +117,19 @@ func (api *Api) GetMatch(matchId int64) MatchDetail {
 	}
 
 	return match
+}
+
+func (api *Api) GetRecentGames(summonerId int64) RecentGamesDto {
+	url := api.constructUrl(RecentGamesEndpoint, strconv.FormatInt(summonerId, 10))
+
+	recentGames := RecentGamesDto{}
+	err := makeRequest(url, &recentGames)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return recentGames
 }
 
 func (api *Api) GetAllChampions(freeToPlay bool) ChampionListDto {

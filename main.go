@@ -11,6 +11,7 @@ var (
 	TEST_SUMMONERS             = false
 	TEST_MATCHLIST             = false
 	TEST_MATCH                 = false
+	TEST_GAMES                 = true
 	TEST_STATIC_DATA_CHAMPIONS = false
 	TEST_ITEMS                 = false
 	TEST_MASTERIES             = false
@@ -27,12 +28,12 @@ func main() {
 	apiKey := string(fileData)
 	a := Api{apiKey, "na", 10}
 
-	if TEST_SUMMONERS || TEST_MATCHLIST || TEST_MATCH {
+	if TEST_SUMMONERS || TEST_MATCHLIST || TEST_MATCH || TEST_GAMES {
 		summoners := a.GetSummoners("drunk7irishman", "rastarockit", "ohsnap62")
 		fmt.Printf("Summoners by name: %+v\n", summoners)
+		sId := summoners[0].Id
 
 		if TEST_MATCHLIST || TEST_MATCH {
-			sId := summoners[0].Id
 			matchList := a.GetRankedMatchList(sId)
 			fmt.Printf("Match list for %d: %+v\n", sId, matchList)
 
@@ -41,6 +42,11 @@ func main() {
 				match := a.GetMatch(mId)
 				fmt.Printf("Match details for match %d: %+v\n", mId, match)
 			}
+		}
+
+		if TEST_GAMES {
+			games := a.GetRecentGames(sId)
+			fmt.Printf("Recent games for %d: %+v\n", sId, games)
 		}
 	}
 
