@@ -8,14 +8,15 @@ import (
 )
 
 var (
-	TEST_SUMMONERS       = false
-	TEST_MATCHLIST       = false
-	TEST_MATCH           = false
-	TEST_CHAMPIONS       = false
-	TEST_ITEMS           = false
-	TEST_MASTERIES       = false
-	TEST_RUNES           = true
-	TEST_SUMMONER_SPELLS = true
+	TEST_SUMMONERS             = false
+	TEST_MATCHLIST             = false
+	TEST_MATCH                 = false
+	TEST_STATIC_DATA_CHAMPIONS = false
+	TEST_ITEMS                 = false
+	TEST_MASTERIES             = false
+	TEST_RUNES                 = false
+	TEST_SUMMONER_SPELLS       = false
+	TEST_CHAMPIONS             = true
 )
 
 func main() {
@@ -43,12 +44,12 @@ func main() {
 		}
 	}
 
-	if TEST_CHAMPIONS {
-		champions := a.GetAllChampions(false)
-		fmt.Printf("All champions: %+v\n", champions)
+	if TEST_STATIC_DATA_CHAMPIONS {
+		staticChampions := a.GetAllChampionsStaticData(false)
+		fmt.Printf("All staticchampions: %+v\n", staticChampions)
 
-		thresh := a.GetChampion(412, true)
-		fmt.Printf("Thresh: %+v\n", thresh)
+		staticThresh := a.GetChampionStaticData(412, true)
+		fmt.Printf("Static Thresh: %+v\n", staticThresh)
 	}
 
 	if TEST_ITEMS {
@@ -75,5 +76,14 @@ func main() {
 	if TEST_SUMMONER_SPELLS {
 		summonerSpells := a.GetAllSummonerSpells(false)
 		fmt.Printf("All summoner spells: %+v\n", summonerSpells)
+	}
+
+	if TEST_CHAMPIONS {
+		champions := a.GetAllChampions(false)
+		fmt.Printf("All champions: %+v\n", champions)
+
+		thresh := a.GetChampion(412)
+		fmt.Printf("Thresh: %+v\n", thresh)
+
 	}
 }

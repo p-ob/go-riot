@@ -1,15 +1,15 @@
 package main
 
 // ChampionListDto types
-type ChampionListDto struct {
-	Data    map[string]ChampionDto
+type StaticChampionListDto struct {
+	Data    map[string]StaticChampionDto
 	Format  string
 	Keys    map[string]string
 	Type    string
 	Version string
 }
 
-type ChampionDto struct {
+type StaticChampionDto struct {
 	AllyTips    []string
 	Blurb       string
 	EnemyTips   []string

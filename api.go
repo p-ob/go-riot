@@ -118,11 +118,9 @@ func (api *Api) GetMatch(matchId int64) MatchDetail {
 	return match
 }
 
-func (api *Api) GetAllChampions(allData bool) ChampionListDto {
-	url := api.constructStaticDataUrl(ChampionsEndpoint)
-	if allData {
-		url += "&champData=all"
-	}
+func (api *Api) GetAllChampions(freeToPlay bool) ChampionListDto {
+	url := api.constructUrl(ChampionsEndpoint)
+	url += "&freeToPlay=" + strconv.FormatBool(freeToPlay)
 
 	champions := ChampionListDto{}
 	err := makeRequest(url, &champions)
@@ -134,13 +132,42 @@ func (api *Api) GetAllChampions(allData bool) ChampionListDto {
 	return champions
 }
 
-func (api *Api) GetChampion(id int, allData bool) ChampionDto {
+func (api *Api) GetChampion(id int) ChampionDto {
+	url := api.constructUrl(ChampionByIdEndpoint, strconv.Itoa(id))
+
+	champion := ChampionDto{}
+	err := makeRequest(url, &champion)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return champion
+}
+
+func (api *Api) GetAllChampionsStaticData(allData bool) StaticChampionListDto {
+	url := api.constructStaticDataUrl(ChampionsEndpoint)
+	if allData {
+		url += "&champData=all"
+	}
+
+	champions := StaticChampionListDto{}
+	err := makeRequest(url, &champions)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return champions
+}
+
+func (api *Api) GetChampionStaticData(id int, allData bool) StaticChampionDto {
 	url := api.constructStaticDataUrl(ChampionByIdEndpoint, strconv.Itoa(id))
 	if allData {
 		url += "&champData=all"
 	}
 
-	champion := ChampionDto{}
+	champion := StaticChampionDto{}
 	err := makeRequest(url, &champion)
 
 	if err != nil {
