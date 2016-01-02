@@ -15,6 +15,7 @@ var (
 	SummonersByNameEndpoint = "v1.4/summoner/by-name/%s"
 	SummonersByIdEndpoint   = "v1.4/summoner/%s"
 	MatchListEndpoint       = "v2.2/matchlist/by-summoner/%s"
+	MatchEndpoint           = "v2.2/match/%s"
 )
 
 type RiotError struct {
@@ -90,6 +91,19 @@ func (api *ApiInfo) GetRankedMatchList(summonerId int64) MatchList {
 	}
 
 	return matchList
+}
+
+func (api *ApiInfo) GetMatch(matchId int64) MatchDetail {
+	url := api.constructUrl(MatchEndpoint, strconv.FormatInt(matchId, 10))
+
+	match := MatchDetail{}
+	err := makeRequest(url, &match)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return match
 }
 
 // private methods
