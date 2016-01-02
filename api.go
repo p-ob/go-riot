@@ -16,6 +16,10 @@ var (
 	SummonersByIdEndpoint   = "v1.4/summoner/%s"
 	MatchListEndpoint       = "v2.2/matchlist/by-summoner/%s"
 	MatchEndpoint           = "v2.2/match/%s"
+	ChampionsEndpoint       = "v1.2/champion"
+	ChampionByIdEndpoint    = "v1.2/champion/%s"
+	//
+	StaticData = "static-data"
 )
 
 type RiotError struct {
@@ -27,14 +31,14 @@ func (err RiotError) Error() string {
 	return fmt.Sprintf("Http Status: %d; %s", err.StatusCode, err.Reason)
 }
 
-type ApiInfo struct {
+type Api struct {
 	Key       string `api key given by https://developer.riotgames.com`
 	Region    string `region to be queried against`
 	RateLimit int    `rate limit given by https://developer.riotgames.com`
 }
 
 // public methods
-func (api *ApiInfo) GetSummoners(summonerNames ...string) []Summoner {
+func (api *Api) GetSummoners(summonerNames ...string) []Summoner {
 	url := api.constructUrl(SummonersByNameEndpoint, summonerNames...)
 
 	summonersMap := make(map[string]Summoner)
@@ -56,7 +60,7 @@ func (api *ApiInfo) GetSummoners(summonerNames ...string) []Summoner {
 	return summonersArray
 }
 
-func (api *ApiInfo) GetSummonersById(summonerIds ...int64) []Summoner {
+func (api *Api) GetSummonersById(summonerIds ...int64) []Summoner {
 	var summonerIdsStrings []string
 	for _, summonerId := range summonerIds {
 		summonerIdsStrings = append(summonerIdsStrings, strconv.FormatInt(summonerId, 10))
@@ -80,7 +84,7 @@ func (api *ApiInfo) GetSummonersById(summonerIds ...int64) []Summoner {
 	return summonersArray
 }
 
-func (api *ApiInfo) GetRankedMatchList(summonerId int64) MatchList {
+func (api *Api) GetRankedMatchList(summonerId int64) MatchList {
 	url := api.constructUrl(MatchListEndpoint, strconv.FormatInt(summonerId, 10))
 
 	matchList := MatchList{}
@@ -93,7 +97,7 @@ func (api *ApiInfo) GetRankedMatchList(summonerId int64) MatchList {
 	return matchList
 }
 
-func (api *ApiInfo) GetMatch(matchId int64) MatchDetail {
+func (api *Api) GetMatch(matchId int64) MatchDetail {
 	url := api.constructUrl(MatchEndpoint, strconv.FormatInt(matchId, 10))
 
 	match := MatchDetail{}
@@ -104,6 +108,38 @@ func (api *ApiInfo) GetMatch(matchId int64) MatchDetail {
 	}
 
 	return match
+}
+
+func (api *Api) GetAllChampions(allData bool) ChampionListDto {
+	url := api.constructStaticDataUrl(ChampionsEndpoint)
+	if allData {
+		url += "&champData=all"
+	}
+
+	champions := ChampionListDto{}
+	err := makeRequest(url, &champions)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return champions
+}
+
+func (api *Api) GetChampion(id int, allData bool) ChampionDto {
+	url := api.constructStaticDataUrl(ChampionByIdEndpoint, strconv.Itoa(id))
+	if allData {
+		url += "&champData=all"
+	}
+
+	champion := ChampionDto{}
+	err := makeRequest(url, &champion)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return champion
 }
 
 // private methods
@@ -132,9 +168,22 @@ func makeRequest(url string, v interface{}) error {
 	return nil
 }
 
-func (api *ApiInfo) constructUrl(endpoint string, args ...string) string {
+func (api *Api) constructUrl(endpoint string, args ...string) string {
 	url := fmt.Sprintf(BaseUrl, api.Region, api.Region, endpoint)
-	url = fmt.Sprintf(url, strings.Join(args, ","))
+	if len(args) > 0 {
+		url = fmt.Sprintf(url, strings.Join(args, ","))
+	}
+	url += "api_key=" + api.Key
+
+	return url
+}
+
+func (api *Api) constructStaticDataUrl(endpoint string, args ...string) string {
+	staticDataUrlPart := fmt.Sprintf("%s/%s", StaticData, api.Region)
+	url := fmt.Sprintf(BaseUrl, api.Region, staticDataUrlPart, endpoint)
+	if len(args) > 0 {
+		url = fmt.Sprintf(url, strings.Join(args, ","))
+	}
 	url += "api_key=" + api.Key
 
 	return url
