@@ -11,17 +11,21 @@ import (
 )
 
 var (
-	BaseUrl                 = "https://%s.api.pvp.net/api/lol/%s/%s?"
-	SummonersByNameEndpoint = "v1.4/summoner/by-name/%s"
-	SummonersByIdEndpoint   = "v1.4/summoner/%s"
-	MatchListEndpoint       = "v2.2/matchlist/by-summoner/%s"
-	MatchEndpoint           = "v2.2/match/%s"
-	ChampionsEndpoint       = "v1.2/champion"
-	ChampionByIdEndpoint    = "v1.2/champion/%s"
-	ItemsEndpoint           = "v1.2/item"
-	ItemByIdEndpoint        = "v1.2/item/%s"
-	MasteriesEndpoint       = "v1.2/mastery"
-	MasteryById             = "v1.2/mastery/%s"
+	BaseUrl                   = "https://%s.api.pvp.net/api/lol/%s/%s?"
+	SummonersByNameEndpoint   = "v1.4/summoner/by-name/%s"
+	SummonersByIdEndpoint     = "v1.4/summoner/%s"
+	MatchListEndpoint         = "v2.2/matchlist/by-summoner/%s"
+	MatchEndpoint             = "v2.2/match/%s"
+	ChampionsEndpoint         = "v1.2/champion"
+	ChampionByIdEndpoint      = "v1.2/champion/%s"
+	ItemsEndpoint             = "v1.2/item"
+	ItemByIdEndpoint          = "v1.2/item/%s"
+	MasteriesEndpoint         = "v1.2/mastery"
+	MasteryByIdEndpoint       = "v1.2/mastery/%s"
+	RunesEndpoint             = "v1.2/rune/"
+	RuneByIdEndpoint          = "v1.2/rune/%s"
+	SummonerSpellsEndpoint    = "v1.2/summoner-spell"
+	SummonerSpellByIdEndpoint = "v1.2/summoner-spell/%s"
 	//
 	StaticData = "static-data"
 )
@@ -165,7 +169,7 @@ func (api *Api) GetAllItems(allData bool) ItemListDto {
 func (api *Api) GetItem(id int, allData bool) ItemDto {
 	url := api.constructStaticDataUrl(ItemByIdEndpoint, strconv.Itoa(id))
 	if allData {
-		url += "&itemListData=all"
+		url += "&itemData=all"
 	}
 
 	item := ItemDto{}
@@ -195,9 +199,9 @@ func (api *Api) GetAllMasteries(allData bool) MasteryListDto {
 }
 
 func (api *Api) GetMastery(id int, allData bool) MasteryDto {
-	url := api.constructStaticDataUrl(MasteryById, strconv.Itoa(id))
+	url := api.constructStaticDataUrl(MasteryByIdEndpoint, strconv.Itoa(id))
 	if allData {
-		url += "&masteryListData=all"
+		url += "&masteryData=all"
 	}
 
 	mastery := MasteryDto{}
@@ -208,6 +212,70 @@ func (api *Api) GetMastery(id int, allData bool) MasteryDto {
 	}
 
 	return mastery
+}
+
+func (api *Api) GetAllRunes(allData bool) RuneListDto {
+	url := api.constructStaticDataUrl(RunesEndpoint)
+	if allData {
+		url += "&runeListData=all"
+	}
+
+	runes := RuneListDto{}
+	err := makeRequest(url, &runes)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return runes
+}
+
+func (api *Api) GetRune(id int, allData bool) RuneDto {
+	url := api.constructStaticDataUrl(RuneByIdEndpoint, strconv.Itoa(id))
+	if allData {
+		url += "&runeData=all"
+	}
+
+	runeObj := RuneDto{}
+	err := makeRequest(url, &runeObj)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return runeObj
+}
+
+func (api *Api) GetAllSummonerSpells(allData bool) SummonerSpellListDto {
+	url := api.constructStaticDataUrl(SummonerSpellsEndpoint)
+	if allData {
+		url += "&spellData=all"
+	}
+
+	summonerSpells := SummonerSpellListDto{}
+	err := makeRequest(url, &summonerSpells)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return summonerSpells
+}
+
+func (api *Api) GetSummonerSpell(id int, allData bool) SummonerSpellDto {
+	url := api.constructStaticDataUrl(SummonerSpellByIdEndpoint, strconv.Itoa(id))
+	if allData {
+		url += "&spellData=all"
+	}
+
+	summonerSpell := SummonerSpellDto{}
+	err := makeRequest(url, &summonerSpell)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return summonerSpell
 }
 
 // private methods

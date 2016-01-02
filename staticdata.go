@@ -327,3 +327,69 @@ type MasteryTreeItemDto struct {
 	MasteryId int
 	Prereq    string
 }
+
+// RuneListDto types
+type RuneListDto struct {
+	Basic   BasicDataDto
+	Data    map[string]RuneDto
+	Type    string
+	Version string
+}
+
+type RuneDto struct {
+	Colloq               string
+	ConsumeOnFull        bool
+	Consumed             bool
+	Depth                int
+	Description          string
+	From                 []string
+	Group                string
+	HideFromAll          bool
+	Id                   int
+	Image                ImageDto
+	InStore              bool
+	Into                 []string
+	Maps                 map[string]bool
+	Name                 string
+	Plaintext            string
+	RequiredChampion     string
+	Rune                 MetaDataDto
+	SanitizedDescription string
+	SpecialRecipe        int
+	Stacks               int
+	Stats                BasicDataStatsDto
+	Tags                 []string
+}
+
+// SummonerSpellListDto types
+type SummonerSpellListDto struct {
+	Data    map[string]SummonerSpellDto
+	Type    string
+	Version string
+}
+
+type SummonerSpellDto struct {
+	Cooldown             float64
+	CooldownBurn         string
+	Cost                 []int
+	CostBurn             string
+	CostType             string
+	Description          string
+	Effect               [][]float64
+	EffectBurn           []string
+	Id                   int
+	Image                ImageDto
+	Key                  string
+	Leveltip             LevelTipDto
+	Maxrank              int
+	Modes                []string
+	Name                 string
+	Range                interface{}
+	RangeBurn            string
+	Resource             string
+	SanitizedDescription string
+	SanitizedTooltip     string
+	SummonerLevel        int
+	Tooltip              string
+	Vars                 []SpellVarsDto
+}

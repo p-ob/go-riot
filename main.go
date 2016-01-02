@@ -8,12 +8,14 @@ import (
 )
 
 var (
-	TEST_SUMMONERS = false
-	TEST_MATCHLIST = false
-	TEST_MATCH     = false
-	TEST_CHAMPIONS = false
-	TEST_ITEMS     = false
-	TEST_MASTERIES = true
+	TEST_SUMMONERS       = false
+	TEST_MATCHLIST       = false
+	TEST_MATCH           = false
+	TEST_CHAMPIONS       = false
+	TEST_ITEMS           = false
+	TEST_MASTERIES       = false
+	TEST_RUNES           = true
+	TEST_SUMMONER_SPELLS = true
 )
 
 func main() {
@@ -63,5 +65,15 @@ func main() {
 
 		thunderlords := a.GetMastery(6362, true)
 		fmt.Printf("Thunderlord's: %+v\n", thunderlords)
+	}
+
+	if TEST_RUNES {
+		runes := a.GetAllRunes(false)
+		fmt.Printf("All runes: %+v\n", runes)
+	}
+
+	if TEST_SUMMONER_SPELLS {
+		summonerSpells := a.GetAllSummonerSpells(false)
+		fmt.Printf("All summoner spells: %+v\n", summonerSpells)
 	}
 }
