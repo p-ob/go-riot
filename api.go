@@ -18,6 +18,8 @@ var (
 	MatchEndpoint           = "v2.2/match/%s"
 	ChampionsEndpoint       = "v1.2/champion"
 	ChampionByIdEndpoint    = "v1.2/champion/%s"
+	ItemsEndpoint           = "v1.2/item"
+	ItemByIdEndpoint        = "v1.2/item/%s"
 	//
 	StaticData = "static-data"
 )
@@ -140,6 +142,38 @@ func (api *Api) GetChampion(id int, allData bool) ChampionDto {
 	}
 
 	return champion
+}
+
+func (api *Api) GetAllItems(allData bool) ItemListDto {
+	url := api.constructStaticDataUrl(ItemsEndpoint)
+	if allData {
+		url += "&itemListData=all"
+	}
+
+	items := ItemListDto{}
+	err := makeRequest(url, &items)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return items
+}
+
+func (api *Api) GetItem(id int, allData bool) ItemDto {
+	url := api.constructStaticDataUrl(ItemByIdEndpoint, strconv.Itoa(id))
+	if allData {
+		url += "&itemListData=all"
+	}
+
+	item := ItemDto{}
+	err := makeRequest(url, &item)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return item
 }
 
 // private methods

@@ -140,4 +140,156 @@ type BlockItemDto struct {
 	Id    int
 }
 
-// ...
+// ItemListDto types
+type ItemListDto struct {
+	Basic   BasicDataDto
+	Data    map[string]ItemDto
+	Groups  []GroupDto
+	Tree    []ItemTreeDto
+	Type    string
+	Version string
+}
+
+type BasicDataDto struct {
+	Colloq               string
+	ConsumeOnFull        bool
+	Consumed             bool
+	Depth                int
+	Description          string
+	From                 []string
+	Gold                 GoldDto
+	Group                string
+	HideFromAll          bool
+	Id                   int
+	Image                ImageDto
+	InStore              bool
+	Into                 []string
+	Maps                 map[string]bool
+	Name                 string
+	Plaintext            string
+	RequiredChampion     string
+	Rune                 MetaDataDto
+	SanitizedDescription string
+	SpecialRecipe        int
+	Stacks               int
+	Stats                BasicDataStatsDto
+	Tags                 []string
+}
+
+type GroupDto struct {
+	MaxGroupOwnable string
+	Key             string
+}
+
+type ItemDto struct {
+	Coolq                string
+	ConsumeOnFull        bool
+	Consumed             bool
+	Depth                int
+	Description          string
+	Effect               map[string]string
+	From                 []string
+	Gold                 GoldDto
+	Group                string
+	HideFromAll          bool
+	Id                   int
+	Image                ImageDto
+	InStore              bool
+	Into                 []string
+	Maps                 map[string]bool
+	Name                 string
+	Plaintext            string
+	RequiredChampion     string
+	Rune                 MetaDataDto
+	SanitizedDescription string
+	SepcialRecipe        int
+	Stacks               int
+	Stats                BasicDataStatsDto
+	Tags                 []string
+}
+
+type ItemTreeDto struct {
+	Header string
+	Tags   []string
+}
+
+type BasicDataStatsDto struct {
+	FlatArmorMod                        float64
+	FlatAttackSpeedMod                  float64
+	FlatBlockMod                        float64
+	FlatCritChanceMod                   float64
+	FlatCritDamageMod                   float64
+	FlatEXPBonus                        float64
+	FlatEnergyPoolMod                   float64
+	FlatEnergyRegenMod                  float64
+	FlatHPPoolMod                       float64
+	FlatHPRegenMod                      float64
+	FlatMPPoolMod                       float64
+	FlatMPRegenMod                      float64
+	FlatMagicDamageMod                  float64
+	FlatMovementSpeedMod                float64
+	FlatPhysicalDamageMod               float64
+	FlatSpellBlockMod                   float64
+	PercentArmorMod                     float64
+	PercentAttackSpeedMod               float64
+	PercentBlockMod                     float64
+	PercentCritChanceMod                float64
+	PercentCritDamageMod                float64
+	PercentDodgeMod                     float64
+	PercentEXPBonus                     float64
+	PercentHPPoolMod                    float64
+	PercentHPRegenMod                   float64
+	PercentLifeStealMod                 float64
+	PercentMPPoolMod                    float64
+	PercentMPRegenMod                   float64
+	PercentMagicDamageMod               float64
+	PercentMovementSpeedMod             float64
+	PercentPhysicalDamageMod            float64
+	PercentSpellBlockMod                float64
+	PercentSpellVampMod                 float64
+	RFlatArmorModPerLevel               float64
+	RFlatArmorPenetrationMod            float64
+	RFlatArmorPenetrationModPerLevel    float64
+	RFlatCritChanceModPerLevel          float64
+	RFlatCritDamageModPerLevel          float64
+	RFlatDodgeMod                       float64
+	RFlatDodgeModPerLevel               float64
+	RFlatEnergyModPerLevel              float64
+	RFlatEnergyRegenModPerLevel         float64
+	RFlatGoldPer10Mod                   float64
+	RFlatHPModPerLevel                  float64
+	RFlatHPRegenModPerLevel             float64
+	RFlatMPModPerLevel                  float64
+	RFlatMPRegenModPerLevel             float64
+	RFlatMagicDamageModPerLevel         float64
+	RFlatMagicPenetrationMod            float64
+	RFlatMagicPenetrationModPerLevel    float64
+	RFlatMovementSpeedModPerLevel       float64
+	RFlatPhysicalDamageModPerLevel      float64
+	RFlatSpellBlockModPerLevel          float64
+	RFlatTimeDeadMod                    float64
+	RFlatTimeDeadModPerLevel            float64
+	RPercentArmorPenetrationMod         float64
+	RPercentArmorPenetrationModPerLevel float64
+	RPercentAttackSpeedModPerLevel      float64
+	RPercentCooldownMod                 float64
+	RPercentCooldownModPerLevel         float64
+	RPercentMagicPenetrationMod         float64
+	RPercentMagicPenetrationModPerLevel float64
+	RPercentMovementSpeedModPerLevel    float64
+	RPercentTimeDeadMod                 float64
+	RPercentTimeDeadModPerLevel         float64
+}
+
+type GoldDto struct {
+	Base        int
+	Purchasable bool
+	Sell        int
+	Total       int
+}
+
+type MetaDataDto struct {
+	IsRune bool
+	Tier   string
+	Type   string
+}
