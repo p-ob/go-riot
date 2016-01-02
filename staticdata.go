@@ -293,3 +293,37 @@ type MetaDataDto struct {
 	Tier   string
 	Type   string
 }
+
+// MasteryListDto types
+type MasteryListDto struct {
+	Data    map[string]MasteryDto
+	Tree    MasteryTreeDto
+	Type    string
+	Version string
+}
+
+type MasteryDto struct {
+	Description          []string
+	Id                   int
+	Image                ImageDto
+	MasteryTree          string
+	Name                 string
+	Prereq               string
+	Ranks                int
+	SanitizedDescription []string
+}
+
+type MasteryTreeDto struct {
+	Cunning  []MasteryTreeListDto
+	Ferocity []MasteryTreeListDto
+	Resolve  []MasteryTreeListDto
+}
+
+type MasteryTreeListDto struct {
+	MasteryTreeItems []MasteryTreeItemDto
+}
+
+type MasteryTreeItemDto struct {
+	MasteryId int
+	Prereq    string
+}

@@ -8,11 +8,12 @@ import (
 )
 
 var (
-	TEST_SUMMONERS = true
-	TEST_MATCHLIST = true
-	TEST_MATCH     = true
-	TEST_CHAMPIONS = true
-	TEST_ITEMS     = true
+	TEST_SUMMONERS = false
+	TEST_MATCHLIST = false
+	TEST_MATCH     = false
+	TEST_CHAMPIONS = false
+	TEST_ITEMS     = false
+	TEST_MASTERIES = true
 )
 
 func main() {
@@ -54,5 +55,13 @@ func main() {
 
 		zekes := a.GetItem(3050, true)
 		fmt.Printf("Zeke's: %+v\n", zekes)
+	}
+
+	if TEST_MASTERIES {
+		masteries := a.GetAllMasteries(false)
+		fmt.Printf("All masteries: %+v\n", masteries)
+
+		thunderlords := a.GetMastery(6362, true)
+		fmt.Printf("Thunderlord's: %+v\n", thunderlords)
 	}
 }
