@@ -30,6 +30,8 @@ var (
 	RecentGamesEndpoint       = "v1.3/game/by-summoner/%s/recent"
 	RankedStatsEndpoint       = "v1.3/stats/by-summoner/%s/ranked"
 	SummaryStatsEndpoint      = "v1.3/stats/by-summoner/%s/summary"
+	TeamBySummonerIdsEndpoint = "v2.4/team/by-summoner/%s"
+	TeamByTeamIdsEndpoint     = "v2.4/team/%s"
 	//
 	StaticData = "static-data"
 )
@@ -74,10 +76,7 @@ func (api *RiotClient) GetSummoners(summonerNames ...string) []Summoner {
 }
 
 func (api *RiotClient) GetSummonersById(summonerIds ...int64) []Summoner {
-	var summonerIdsStrings []string
-	for _, summonerId := range summonerIds {
-		summonerIdsStrings = append(summonerIdsStrings, strconv.FormatInt(summonerId, 10))
-	}
+	summonerIdsStrings := int64ArrayToString(summonerIds)
 
 	url := api.constructUrl(SummonersByIdEndpoint, summonerIdsStrings...)
 	summonersMap := make(map[string]Summoner)
@@ -349,6 +348,34 @@ func (api *RiotClient) GetSummonerSpell(id int, allData bool) SummonerSpellDto {
 	return summonerSpell
 }
 
+func (api *RiotClient) GetTeamsBySummonerIds(summonerIds ...int64) map[string]TeamDto {
+	summonerIdsStrings := int64ArrayToString(summonerIds)
+	url := api.constructUrl(TeamBySummonerIdsEndpoint, summonerIdsStrings...)
+
+	teams := make(map[string]TeamDto)
+	err := makeRequest(url, &teams)
+
+	if err != nil {
+		handleError(err)
+	}
+
+	return teams
+}
+
+func (api *RiotClient) GetTeamsByTeamIds(teamIds ...int64) map[string]TeamDto {
+	teamIdsStrings := int64ArrayToString(teamIds)
+	url := api.constructUrl(TeamByTeamIdsEndpoint, teamIdsStrings...)
+
+	teams := make(map[string]TeamDto)
+	err := makeRequest(url, &teams)
+
+	if err != nil {
+		handleError(err)
+	}
+
+	return teams
+}
+
 // private methods
 func makeRequest(url string, v interface{}) error {
 	resp, err := http.Get(url)
@@ -390,6 +417,15 @@ func handleError(err error) error {
 	}
 	log.Fatal(err)
 	return err
+}
+
+func int64ArrayToString(intArray []int64) []string {
+	var strArray []string
+	for _, intVal := range intArray {
+		strArray = append(strArray, strconv.FormatInt(intVal, 10))
+	}
+
+	return strArray
 }
 
 func (api *RiotClient) constructUrl(endpoint string, args ...string) string {
