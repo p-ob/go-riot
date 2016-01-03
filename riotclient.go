@@ -44,14 +44,14 @@ func (err RiotError) Error() string {
 	return fmt.Sprintf("Http Status: %d; %s", err.StatusCode, err.Reason)
 }
 
-type Api struct {
+type RiotClient struct {
 	Key       string `api key given by https://developer.riotgames.com`
 	Region    string `region to be queried against`
 	RateLimit int    `rate limit given by https://developer.riotgames.com`
 }
 
 // public methods
-func (api *Api) GetSummoners(summonerNames ...string) []Summoner {
+func (api *RiotClient) GetSummoners(summonerNames ...string) []Summoner {
 	url := api.constructUrl(SummonersByNameEndpoint, summonerNames...)
 
 	summonersMap := make(map[string]Summoner)
@@ -73,7 +73,7 @@ func (api *Api) GetSummoners(summonerNames ...string) []Summoner {
 	return summonersArray
 }
 
-func (api *Api) GetSummonersById(summonerIds ...int64) []Summoner {
+func (api *RiotClient) GetSummonersById(summonerIds ...int64) []Summoner {
 	var summonerIdsStrings []string
 	for _, summonerId := range summonerIds {
 		summonerIdsStrings = append(summonerIdsStrings, strconv.FormatInt(summonerId, 10))
@@ -97,7 +97,7 @@ func (api *Api) GetSummonersById(summonerIds ...int64) []Summoner {
 	return summonersArray
 }
 
-func (api *Api) GetRankedMatchList(summonerId int64) MatchList {
+func (api *RiotClient) GetRankedMatchList(summonerId int64) MatchList {
 	url := api.constructUrl(MatchListEndpoint, strconv.FormatInt(summonerId, 10))
 
 	matchList := MatchList{}
@@ -110,7 +110,7 @@ func (api *Api) GetRankedMatchList(summonerId int64) MatchList {
 	return matchList
 }
 
-func (api *Api) GetMatch(matchId int64) MatchDetail {
+func (api *RiotClient) GetMatch(matchId int64) MatchDetail {
 	url := api.constructUrl(MatchEndpoint, strconv.FormatInt(matchId, 10))
 
 	match := MatchDetail{}
@@ -123,7 +123,7 @@ func (api *Api) GetMatch(matchId int64) MatchDetail {
 	return match
 }
 
-func (api *Api) GetRecentGames(summonerId int64) RecentGamesDto {
+func (api *RiotClient) GetRecentGames(summonerId int64) RecentGamesDto {
 	url := api.constructUrl(RecentGamesEndpoint, strconv.FormatInt(summonerId, 10))
 
 	recentGames := RecentGamesDto{}
@@ -136,7 +136,7 @@ func (api *Api) GetRecentGames(summonerId int64) RecentGamesDto {
 	return recentGames
 }
 
-func (api *Api) GetRankedStats(summonerId int64) RankedStatsDto {
+func (api *RiotClient) GetRankedStats(summonerId int64) RankedStatsDto {
 	url := api.constructUrl(RankedStatsEndpoint, strconv.FormatInt(summonerId, 10))
 
 	rankedStats := RankedStatsDto{}
@@ -149,7 +149,7 @@ func (api *Api) GetRankedStats(summonerId int64) RankedStatsDto {
 	return rankedStats
 }
 
-func (api *Api) GetSummaryStats(summonerId int64) PlayerStatsSummaryListDto {
+func (api *RiotClient) GetSummaryStats(summonerId int64) PlayerStatsSummaryListDto {
 	url := api.constructUrl(SummaryStatsEndpoint, strconv.FormatInt(summonerId, 10))
 
 	summaryStats := PlayerStatsSummaryListDto{}
@@ -162,7 +162,7 @@ func (api *Api) GetSummaryStats(summonerId int64) PlayerStatsSummaryListDto {
 	return summaryStats
 }
 
-func (api *Api) GetAllChampions(freeToPlay bool) ChampionListDto {
+func (api *RiotClient) GetAllChampions(freeToPlay bool) ChampionListDto {
 	url := api.constructUrl(ChampionsEndpoint)
 	url += "&freeToPlay=" + strconv.FormatBool(freeToPlay)
 
@@ -176,7 +176,7 @@ func (api *Api) GetAllChampions(freeToPlay bool) ChampionListDto {
 	return champions
 }
 
-func (api *Api) GetChampion(id int) ChampionDto {
+func (api *RiotClient) GetChampion(id int) ChampionDto {
 	url := api.constructUrl(ChampionByIdEndpoint, strconv.Itoa(id))
 
 	champion := ChampionDto{}
@@ -189,7 +189,7 @@ func (api *Api) GetChampion(id int) ChampionDto {
 	return champion
 }
 
-func (api *Api) GetAllChampionsStaticData(allData bool) StaticChampionListDto {
+func (api *RiotClient) GetAllChampionsStaticData(allData bool) StaticChampionListDto {
 	url := api.constructStaticDataUrl(ChampionsEndpoint)
 	if allData {
 		url += "&champData=all"
@@ -205,7 +205,7 @@ func (api *Api) GetAllChampionsStaticData(allData bool) StaticChampionListDto {
 	return champions
 }
 
-func (api *Api) GetChampionStaticData(id int, allData bool) StaticChampionDto {
+func (api *RiotClient) GetChampionStaticData(id int, allData bool) StaticChampionDto {
 	url := api.constructStaticDataUrl(ChampionByIdEndpoint, strconv.Itoa(id))
 	if allData {
 		url += "&champData=all"
@@ -221,7 +221,7 @@ func (api *Api) GetChampionStaticData(id int, allData bool) StaticChampionDto {
 	return champion
 }
 
-func (api *Api) GetAllItems(allData bool) ItemListDto {
+func (api *RiotClient) GetAllItems(allData bool) ItemListDto {
 	url := api.constructStaticDataUrl(ItemsEndpoint)
 	if allData {
 		url += "&itemListData=all"
@@ -237,7 +237,7 @@ func (api *Api) GetAllItems(allData bool) ItemListDto {
 	return items
 }
 
-func (api *Api) GetItem(id int, allData bool) ItemDto {
+func (api *RiotClient) GetItem(id int, allData bool) ItemDto {
 	url := api.constructStaticDataUrl(ItemByIdEndpoint, strconv.Itoa(id))
 	if allData {
 		url += "&itemData=all"
@@ -253,7 +253,7 @@ func (api *Api) GetItem(id int, allData bool) ItemDto {
 	return item
 }
 
-func (api *Api) GetAllMasteries(allData bool) MasteryListDto {
+func (api *RiotClient) GetAllMasteries(allData bool) MasteryListDto {
 	url := api.constructStaticDataUrl(MasteriesEndpoint)
 	if allData {
 		url += "&masteryListData=all"
@@ -269,7 +269,7 @@ func (api *Api) GetAllMasteries(allData bool) MasteryListDto {
 	return masteries
 }
 
-func (api *Api) GetMastery(id int, allData bool) MasteryDto {
+func (api *RiotClient) GetMastery(id int, allData bool) MasteryDto {
 	url := api.constructStaticDataUrl(MasteryByIdEndpoint, strconv.Itoa(id))
 	if allData {
 		url += "&masteryData=all"
@@ -285,7 +285,7 @@ func (api *Api) GetMastery(id int, allData bool) MasteryDto {
 	return mastery
 }
 
-func (api *Api) GetAllRunes(allData bool) RuneListDto {
+func (api *RiotClient) GetAllRunes(allData bool) RuneListDto {
 	url := api.constructStaticDataUrl(RunesEndpoint)
 	if allData {
 		url += "&runeListData=all"
@@ -301,7 +301,7 @@ func (api *Api) GetAllRunes(allData bool) RuneListDto {
 	return runes
 }
 
-func (api *Api) GetRune(id int, allData bool) RuneDto {
+func (api *RiotClient) GetRune(id int, allData bool) RuneDto {
 	url := api.constructStaticDataUrl(RuneByIdEndpoint, strconv.Itoa(id))
 	if allData {
 		url += "&runeData=all"
@@ -317,7 +317,7 @@ func (api *Api) GetRune(id int, allData bool) RuneDto {
 	return runeObj
 }
 
-func (api *Api) GetAllSummonerSpells(allData bool) SummonerSpellListDto {
+func (api *RiotClient) GetAllSummonerSpells(allData bool) SummonerSpellListDto {
 	url := api.constructStaticDataUrl(SummonerSpellsEndpoint)
 	if allData {
 		url += "&spellData=all"
@@ -333,7 +333,7 @@ func (api *Api) GetAllSummonerSpells(allData bool) SummonerSpellListDto {
 	return summonerSpells
 }
 
-func (api *Api) GetSummonerSpell(id int, allData bool) SummonerSpellDto {
+func (api *RiotClient) GetSummonerSpell(id int, allData bool) SummonerSpellDto {
 	url := api.constructStaticDataUrl(SummonerSpellByIdEndpoint, strconv.Itoa(id))
 	if allData {
 		url += "&spellData=all"
@@ -392,7 +392,7 @@ func handleError(err error) error {
 	return err
 }
 
-func (api *Api) constructUrl(endpoint string, args ...string) string {
+func (api *RiotClient) constructUrl(endpoint string, args ...string) string {
 	url := fmt.Sprintf(BaseUrl, api.Region, api.Region, endpoint)
 	if len(args) > 0 {
 		url = fmt.Sprintf(url, strings.Join(args, ","))
@@ -402,7 +402,7 @@ func (api *Api) constructUrl(endpoint string, args ...string) string {
 	return url
 }
 
-func (api *Api) constructStaticDataUrl(endpoint string, args ...string) string {
+func (api *RiotClient) constructStaticDataUrl(endpoint string, args ...string) string {
 	staticDataUrlPart := fmt.Sprintf("%s/%s", StaticData, api.Region)
 	url := fmt.Sprintf(BaseUrl, api.Region, staticDataUrlPart, endpoint)
 	if len(args) > 0 {
