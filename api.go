@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -36,6 +37,7 @@ var (
 type RiotError struct {
 	StatusCode int
 	Reason     string
+	Header     http.Header
 }
 
 func (err RiotError) Error() string {
@@ -56,7 +58,7 @@ func (api *Api) GetSummoners(summonerNames ...string) []Summoner {
 	err := makeRequest(url, &summonersMap)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	var summonersArray []Summoner
@@ -82,7 +84,7 @@ func (api *Api) GetSummonersById(summonerIds ...int64) []Summoner {
 	err := makeRequest(url, &summonersMap)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	var summonersArray []Summoner
@@ -102,7 +104,7 @@ func (api *Api) GetRankedMatchList(summonerId int64) MatchList {
 	err := makeRequest(url, &matchList)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return matchList
@@ -115,7 +117,7 @@ func (api *Api) GetMatch(matchId int64) MatchDetail {
 	err := makeRequest(url, &match)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return match
@@ -128,7 +130,7 @@ func (api *Api) GetRecentGames(summonerId int64) RecentGamesDto {
 	err := makeRequest(url, &recentGames)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return recentGames
@@ -141,7 +143,7 @@ func (api *Api) GetRankedStats(summonerId int64) RankedStatsDto {
 	err := makeRequest(url, &rankedStats)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return rankedStats
@@ -154,7 +156,7 @@ func (api *Api) GetSummaryStats(summonerId int64) PlayerStatsSummaryListDto {
 	err := makeRequest(url, &summaryStats)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return summaryStats
@@ -168,7 +170,7 @@ func (api *Api) GetAllChampions(freeToPlay bool) ChampionListDto {
 	err := makeRequest(url, &champions)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return champions
@@ -181,7 +183,7 @@ func (api *Api) GetChampion(id int) ChampionDto {
 	err := makeRequest(url, &champion)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return champion
@@ -197,7 +199,7 @@ func (api *Api) GetAllChampionsStaticData(allData bool) StaticChampionListDto {
 	err := makeRequest(url, &champions)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return champions
@@ -213,7 +215,7 @@ func (api *Api) GetChampionStaticData(id int, allData bool) StaticChampionDto {
 	err := makeRequest(url, &champion)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return champion
@@ -229,7 +231,7 @@ func (api *Api) GetAllItems(allData bool) ItemListDto {
 	err := makeRequest(url, &items)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return items
@@ -245,7 +247,7 @@ func (api *Api) GetItem(id int, allData bool) ItemDto {
 	err := makeRequest(url, &item)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return item
@@ -261,7 +263,7 @@ func (api *Api) GetAllMasteries(allData bool) MasteryListDto {
 	err := makeRequest(url, &masteries)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return masteries
@@ -277,7 +279,7 @@ func (api *Api) GetMastery(id int, allData bool) MasteryDto {
 	err := makeRequest(url, &mastery)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return mastery
@@ -293,7 +295,7 @@ func (api *Api) GetAllRunes(allData bool) RuneListDto {
 	err := makeRequest(url, &runes)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return runes
@@ -309,7 +311,7 @@ func (api *Api) GetRune(id int, allData bool) RuneDto {
 	err := makeRequest(url, &runeObj)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return runeObj
@@ -325,7 +327,7 @@ func (api *Api) GetAllSummonerSpells(allData bool) SummonerSpellListDto {
 	err := makeRequest(url, &summonerSpells)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return summonerSpells
@@ -341,7 +343,7 @@ func (api *Api) GetSummonerSpell(id int, allData bool) SummonerSpellDto {
 	err := makeRequest(url, &summonerSpell)
 
 	if err != nil {
-		log.Fatal(err)
+		handleError(err)
 	}
 
 	return summonerSpell
@@ -356,7 +358,7 @@ func makeRequest(url string, v interface{}) error {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return RiotError{resp.StatusCode, resp.Status}
+		return RiotError{resp.StatusCode, resp.Status, resp.Header}
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -371,6 +373,23 @@ func makeRequest(url string, v interface{}) error {
 	json.Unmarshal(body, v)
 
 	return nil
+}
+
+func handleError(err error) error {
+	if riotErr, ok := err.(RiotError); ok {
+		// handle TooManyRequests error
+		if riotErr.StatusCode == 429 {
+			header := riotErr.Header["Retry-After"]
+			if len(header) > 0 {
+				timeToSleep, err := strconv.Atoi(header[0])
+				if err != nil {
+					time.Sleep(time.Duration(timeToSleep) * time.Second)
+				}
+			}
+		}
+	}
+	log.Fatal(err)
+	return err
 }
 
 func (api *Api) constructUrl(endpoint string, args ...string) string {

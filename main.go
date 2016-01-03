@@ -102,6 +102,5 @@ func main() {
 
 		thresh := a.GetChampion(412)
 		fmt.Printf("Thresh: %+v\n", thresh)
-
 	}
 }
