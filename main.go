@@ -11,13 +11,15 @@ var (
 	TEST_SUMMONERS             = false
 	TEST_MATCHLIST             = false
 	TEST_MATCH                 = false
-	TEST_GAMES                 = true
+	TEST_GAMES                 = false
 	TEST_STATIC_DATA_CHAMPIONS = false
 	TEST_ITEMS                 = false
 	TEST_MASTERIES             = false
 	TEST_RUNES                 = false
 	TEST_SUMMONER_SPELLS       = false
-	TEST_CHAMPIONS             = true
+	TEST_CHAMPIONS             = false
+	TEST_RANKED_STATS          = true
+	TEST_SUMMARY_STATS         = true
 )
 
 func main() {
@@ -28,7 +30,7 @@ func main() {
 	apiKey := string(fileData)
 	a := Api{apiKey, "na", 10}
 
-	if TEST_SUMMONERS || TEST_MATCHLIST || TEST_MATCH || TEST_GAMES {
+	if TEST_SUMMONERS || TEST_MATCHLIST || TEST_MATCH || TEST_GAMES || TEST_RANKED_STATS || TEST_SUMMARY_STATS {
 		summoners := a.GetSummoners("drunk7irishman", "rastarockit", "ohsnap62")
 		fmt.Printf("Summoners by name: %+v\n", summoners)
 		sId := summoners[0].Id
@@ -47,6 +49,16 @@ func main() {
 		if TEST_GAMES {
 			games := a.GetRecentGames(sId)
 			fmt.Printf("Recent games for %d: %+v\n", sId, games)
+		}
+
+		if TEST_RANKED_STATS {
+			rankedStats := a.GetRecentGames(sId)
+			fmt.Printf("Ranked stats for %d: %+v\n", sId, rankedStats)
+		}
+
+		if TEST_SUMMARY_STATS {
+			summaryStats := a.GetRecentGames(sId)
+			fmt.Printf("Summary stats for %d: %+v\n", sId, summaryStats)
 		}
 	}
 

@@ -27,6 +27,8 @@ var (
 	SummonerSpellsEndpoint    = "v1.2/summoner-spell"
 	SummonerSpellByIdEndpoint = "v1.2/summoner-spell/%s"
 	RecentGamesEndpoint       = "v1.3/game/by-summoner/%s/recent"
+	RankedStatsEndpoint       = "v1.3/stats/by-summoner/%s/ranked"
+	SummaryStatsEndpoint      = "v1.3/stats/by-summoner/%s/summary"
 	//
 	StaticData = "static-data"
 )
@@ -130,6 +132,32 @@ func (api *Api) GetRecentGames(summonerId int64) RecentGamesDto {
 	}
 
 	return recentGames
+}
+
+func (api *Api) GetRankedStats(summonerId int64) RankedStatsDto {
+	url := api.constructUrl(RankedStatsEndpoint, strconv.FormatInt(summonerId, 10))
+
+	rankedStats := RankedStatsDto{}
+	err := makeRequest(url, &rankedStats)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return rankedStats
+}
+
+func (api *Api) GetSummaryStats(summonerId int64) PlayerStatsSummaryListDto {
+	url := api.constructUrl(SummaryStatsEndpoint, strconv.FormatInt(summonerId, 10))
+
+	summaryStats := PlayerStatsSummaryListDto{}
+	err := makeRequest(url, &summaryStats)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return summaryStats
 }
 
 func (api *Api) GetAllChampions(freeToPlay bool) ChampionListDto {
