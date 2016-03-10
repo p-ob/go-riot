@@ -76,7 +76,7 @@ func (api *RiotClient) GetSummoners(summonerNames ...string) []Summoner {
 }
 
 func (api *RiotClient) GetSummonersById(summonerIds ...int64) []Summoner {
-	summonerIdsStrings := int64ArrayToString(summonerIds)
+	summonerIdsStrings := int64ArrayToStringArray(summonerIds)
 
 	url := api.constructUrl(SummonersByIdEndpoint, summonerIdsStrings...)
 	summonersMap := make(map[string]Summoner)
@@ -349,7 +349,7 @@ func (api *RiotClient) GetSummonerSpell(id int, allData bool) SummonerSpellDto {
 }
 
 func (api *RiotClient) GetTeamsBySummonerIds(summonerIds ...int64) map[string]TeamDto {
-	summonerIdsStrings := int64ArrayToString(summonerIds)
+	summonerIdsStrings := int64ArrayToStringArray(summonerIds)
 	url := api.constructUrl(TeamBySummonerIdsEndpoint, summonerIdsStrings...)
 
 	teams := make(map[string]TeamDto)
@@ -363,7 +363,7 @@ func (api *RiotClient) GetTeamsBySummonerIds(summonerIds ...int64) map[string]Te
 }
 
 func (api *RiotClient) GetTeamsByTeamIds(teamIds ...int64) map[string]TeamDto {
-	teamIdsStrings := int64ArrayToString(teamIds)
+	teamIdsStrings := int64ArrayToStringArray(teamIds)
 	url := api.constructUrl(TeamByTeamIdsEndpoint, teamIdsStrings...)
 
 	teams := make(map[string]TeamDto)
@@ -419,7 +419,7 @@ func handleError(err error) error {
 	return err
 }
 
-func int64ArrayToString(intArray []int64) []string {
+func int64ArrayToStringArray(intArray []int64) []string {
 	var strArray []string
 	for _, intVal := range intArray {
 		strArray = append(strArray, strconv.FormatInt(intVal, 10))
