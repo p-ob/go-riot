@@ -45,3 +45,4 @@ doc.go
 *.exe
 key.txt
 *.exe~
+.idea/
