@@ -23,7 +23,7 @@ Resources mapped:
 - [Champion](https://developer.riotgames.com/api/methods#!/1206)
 - [ChampionMastery](https://developer.riotgames.com/api/methods#!/1091)
 - [CurrentGame](https://developer.riotgames.com/api/methods#!/976)
-- [FeaturedGame](https://developer.riotgames.com/api/methods#!/977)
+- [FeaturedGames](https://developer.riotgames.com/api/methods#!/977)
 - [Game](https://developer.riotgames.com/api/methods#!/1207)
 - [League](https://developer.riotgames.com/api/methods#!/1215)
 - [Match](https://developer.riotgames.com/api/methods#!/1224)
