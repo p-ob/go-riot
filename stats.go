@@ -96,14 +96,14 @@ type GetStatsParams struct {
 	Season string `url:"season,omitempty"`
 }
 
-const statsPathPart = "/api/lol/{region}/v1.3/stats/"
+const statsPathPart = "api/lol/%s/v1.3/stats"
 
 func (s *StatsService) GetRankedBySummoner(ctx context.Context, summonerId int64, params *GetStatsParams) (*RankedStatsDto, error) {
 	stats := new(RankedStatsDto)
 
 	err := s.client.GetResource(
 		ctx,
-		fmt.Sprintf(statsPathPart+"/%s/ranked", summonerId),
+		fmt.Sprintf(addRegionToString(statsPathPart, s.client.Region)+"/by-summoner/%v/ranked", summonerId),
 		"",
 		params,
 		stats)
@@ -115,7 +115,7 @@ func (s *StatsService) GetSummaryBySummoner(ctx context.Context, summonerId int6
 
 	err := s.client.GetResource(
 		ctx,
-		fmt.Sprintf(statsPathPart+"/%s/summary", summonerId),
+		fmt.Sprintf(addRegionToString(statsPathPart, s.client.Region)+"/by-summoner/%v/summary", summonerId),
 		"",
 		params,
 		stats)

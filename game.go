@@ -119,16 +119,15 @@ type RawStatsDto struct {
 	Win                             bool `json:"win"`
 }
 
-const gamePathPart = "api/lol/{region}/v1.3/game"
+const gamePathPart = "api/lol/%s/v1.3/game"
 
-func (s *GameService) GetRecent(ctx context.Context, summonerId int64) (*FeaturedGames, error) {
-	featuredGames := new(FeaturedGames)
-
+func (s *GameService) GetRecent(ctx context.Context, summonerId int64) (*RecentGamesDto, error) {
+	games := new(RecentGamesDto)
 	err := s.client.GetResource(
 		ctx,
-		fmt.Sprintf(gamePathPart+"/%s/recent", summonerId),
+		fmt.Sprintf(addRegionToString(gamePathPart, s.client.Region)+"/by-summoner/%v/recent", summonerId),
 		"",
 		nil,
-		featuredGames)
-	return featuredGames, err
+		games)
+	return games, err
 }
