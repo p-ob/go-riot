@@ -103,7 +103,7 @@ func (s *StatsService) GetRankedBySummoner(ctx context.Context, summonerId int64
 
 	err := s.client.GetResource(
 		ctx,
-		fmt.Sprintf(addRegionToString(statsPathPart, s.client.Region)+"/by-summoner/%v/ranked", summonerId),
+		fmt.Sprintf("%s/by-summoner/%v/ranked", addRegionToString(statsPathPart, s.client.Region), summonerId),
 		"",
 		params,
 		stats)
@@ -115,7 +115,7 @@ func (s *StatsService) GetSummaryBySummoner(ctx context.Context, summonerId int6
 
 	err := s.client.GetResource(
 		ctx,
-		fmt.Sprintf(addRegionToString(statsPathPart, s.client.Region)+"/by-summoner/%v/summary", summonerId),
+		fmt.Sprintf("%s/by-summoner/%v/summary", addRegionToString(statsPathPart, s.client.Region), summonerId),
 		"",
 		params,
 		stats)

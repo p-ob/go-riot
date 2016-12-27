@@ -125,7 +125,7 @@ func (s *GameService) GetRecent(ctx context.Context, summonerId int64) (*RecentG
 	games := new(RecentGamesDto)
 	err := s.client.GetResource(
 		ctx,
-		fmt.Sprintf(addRegionToString(gamePathPart, s.client.Region)+"/by-summoner/%v/recent", summonerId),
+		fmt.Sprintf("%s/by-summoner/%v/recent", addRegionToString(gamePathPart, s.client.Region), summonerId),
 		"",
 		nil,
 		games)

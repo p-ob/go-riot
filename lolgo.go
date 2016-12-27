@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"errors"
 )
 
 // lolgo metadata
@@ -25,7 +26,7 @@ type RiotApiError struct {
 
 type RiotApiErrorStatus struct {
 	StatusCode int    `json:"status_code,omitempty"`
-	Message    string `json:"messasge,omitempty"`
+	Message    string `json:"message,omitempty"`
 }
 
 type Region int
@@ -105,13 +106,20 @@ func (c *Client) GetResource(ctx context.Context, pathPart string, sid string, p
 	if sid != "" {
 		sidPart = strings.Join([]string{pathPart, sid}, "/")
 	}
-	baseParams := BaseParams{}
+	riotError := new(RiotApiError)
+	baseParams := new(BaseParams)
 	baseParams.ApiKey = c.ApiKey
 	req, err := c.New().Get(sidPart).QueryStruct(params).QueryStruct(baseParams).Request()
 	if err == nil {
-		// TODO error interface (not map[string]interface{})
 		req.WithContext(ctx)
-		c.Do(req, v, new(map[string]interface{}))
+		c.Do(req, v, riotError)
+	}
+	if riotError.Status.StatusCode >= 400 {
+		errorMsg := fmt.Sprintf(
+			"Status: %v; Reason: %s",
+			riotError.Status.StatusCode,
+			riotError.Status.Message)
+		err = errors.New(errorMsg)
 	}
 	return err
 }
