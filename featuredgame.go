@@ -9,8 +9,8 @@ type FeaturedGamesService struct {
 }
 
 type FeaturedGames struct {
-	ClientRefreshInterval int64
-	GameList              []CurrentGameInfo
+	ClientRefreshInterval int64             `json:"clientRefreshInterval"`
+	GameList              []CurrentGameInfo `json:"gameList"`
 }
 
 const featuredGamePathPart = "observer-mode/rest/featured"

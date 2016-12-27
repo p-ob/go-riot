@@ -65,6 +65,9 @@ type Client struct {
 	FeaturedGames   *FeaturedGamesService
 	Game            *GameService
 	Stats           *StatsService
+	League          *LeagueService
+	Status          *StatusService
+	StaticData      *StaticDataService
 }
 
 const defaultTimeout = 30*time.Second + 500*time.Millisecond
@@ -97,6 +100,9 @@ func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 	c.FeaturedGames = &FeaturedGamesService{client: c}
 	c.Game = &GameService{client: c}
 	c.Stats = &StatsService{client: c}
+	c.League = &LeagueService{client: c}
+	c.Status = &StatusService{client: c}
+	c.StaticData = &StaticDataService{client: c}
 
 	return c
 }
