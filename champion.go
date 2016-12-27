@@ -14,12 +14,12 @@ type ChampionListDto struct {
 }
 
 type ChampionDto struct {
-	Active bool `json:"active"`
-	BotEnabled bool `json:"botEnabled"`
-	BotMmEnabled bool `json:"botMmEnabled"`
-	FreeToPlay bool `json:"freeToPlay"`
-	Id int64 `json:"id"`
-	RankedPlayEnabled bool `json:"rankedPlayEnabled"`
+	Active            bool  `json:"active"`
+	BotEnabled        bool  `json:"botEnabled"`
+	BotMmEnabled      bool  `json:"botMmEnabled"`
+	FreeToPlay        bool  `json:"freeToPlay"`
+	Id                int64 `json:"id"`
+	RankedPlayEnabled bool  `json:"rankedPlayEnabled"`
 }
 
 type GetChampionsParams struct {

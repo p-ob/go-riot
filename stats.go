@@ -11,12 +11,12 @@ type StatsService struct {
 
 type RankedStatsDto struct {
 	Champions  []ChampionStatsDto `json:"champions"`
-	ModifyDate int64 `json:"modifyDate"`
-	SummonerId int64 `json:"summonerId"`
+	ModifyDate int64              `json:"modifyDate"`
+	SummonerId int64              `json:"summonerId"`
 }
 
 type ChampionStatsDto struct {
-	Id    int `json:"id"`
+	Id    int                `json:"id"`
 	Stats AggregatedStatsDto `json:"stats"`
 }
 
@@ -81,15 +81,15 @@ type AggregatedStatsDto struct {
 
 type PlayerStatsSummaryListDto struct {
 	PlayerStatSummaries []PlayerStatsSummaryDto `json:"playerStatSummaries"`
-	SummonerId          int64 `json:"summonerId"`
+	SummonerId          int64                   `json:"summonerId"`
 }
 
 type PlayerStatsSummaryDto struct {
 	AggregatedStats       AggregatedStatsDto `json:"aggregatedStats"`
-	Losses                int `json:"losses"`
-	ModifyDate            int64 `json:"modifyDate"`
-	PlayerStatSummaryType string `json:"playerStatSummaryType"`
-	Wins                  int `json:"wins"`
+	Losses                int                `json:"losses"`
+	ModifyDate            int64              `json:"modifyDate"`
+	PlayerStatSummaryType string             `json:"playerStatSummaryType"`
+	Wins                  int                `json:"wins"`
 }
 
 type GetStatsParams struct {
@@ -121,4 +121,3 @@ func (s *StatsService) GetSummaryBySummoner(ctx context.Context, summonerId int6
 		stats)
 	return stats, err
 }
-

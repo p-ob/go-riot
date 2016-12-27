@@ -10,7 +10,7 @@ type FeaturedGamesService struct {
 
 type FeaturedGames struct {
 	ClientRefreshInterval int64
-	GameList []CurrentGameInfo
+	GameList              []CurrentGameInfo
 }
 
 const featuredGamePathPart = "observer-mode/rest/featured"
@@ -26,5 +26,3 @@ func (s *FeaturedGamesService) Get(ctx context.Context) (*FeaturedGames, error) 
 		featuredGames)
 	return featuredGames, err
 }
-
-

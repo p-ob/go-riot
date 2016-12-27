@@ -40,14 +40,14 @@ type RunePagesDto struct {
 }
 
 type RunePageDto struct {
-	Id        int          `json:"id"`
-	Name      string       `json:"name"`
-	Current   bool         `json:"current"`
-	slots []RuneDto `json:"slots,omitempty"`
+	Id      int       `json:"id"`
+	Name    string    `json:"name"`
+	Current bool      `json:"current"`
+	slots   []RuneDto `json:"slots,omitempty"`
 }
 
 type RuneDto struct {
-	RuneId   int `json:"runeId"`
+	RuneId     int `json:"runeId"`
 	RuneSlotId int `json:"runeSlotId"`
 }
 
@@ -92,7 +92,7 @@ func (s *SummonerService) GetMasteries(ctx context.Context, summonerIds ...int64
 		ctx,
 		addRegionToString(summonerPathPart, s.client.Region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/masteries",
-	nil,
+		nil,
 		masteries)
 	return masteries, err
 }

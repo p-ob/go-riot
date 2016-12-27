@@ -60,10 +60,10 @@ type Client struct {
 	MatchList       *MatchListService
 	Champion        *ChampionService
 	ChampionMastery *ChampionMasteryService
-	CurrentGame *CurrentGameService
-	FeaturedGames *FeaturedGamesService
-	Game *GameService
-	Stats *StatsService
+	CurrentGame     *CurrentGameService
+	FeaturedGames   *FeaturedGamesService
+	Game            *GameService
+	Stats           *StatsService
 }
 
 const defaultTimeout = 30*time.Second + 500*time.Millisecond
