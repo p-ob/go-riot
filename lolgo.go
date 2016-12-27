@@ -50,10 +50,9 @@ const (
 var BaseURL = "https://%s.api.pvp.net/"
 
 type Client struct {
-	*sling.Sling
-
+	sling  *sling.Sling
 	ApiKey string
-	Region Region
+	region Region
 
 	// The API Client uses these resources
 	Summoner        *SummonerService
@@ -94,7 +93,7 @@ func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 			runtime.GOOS,
 			runtime.GOARCH))
 
-	c := &Client{Sling: slingClient, ApiKey: apiKey, Region: region}
+	c := &Client{sling: slingClient, ApiKey: apiKey, region: region}
 	c.Summoner = &SummonerService{client: c}
 	c.Match = &MatchService{client: c}
 	c.MatchList = &MatchListService{client: c}
@@ -111,6 +110,11 @@ func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 	return c
 }
 
+// returns the region set for this Client
+func (c Client) Region() Region {
+	return c.region
+}
+
 func (c *Client) getResource(ctx context.Context, pathPart string, sid string, params interface{}, v interface{}) error {
 	sidPart := pathPart
 	if sid != "" {
@@ -119,10 +123,10 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 	riotError := new(RiotApiError)
 	baseParams := new(BaseParams)
 	baseParams.ApiKey = c.ApiKey
-	req, err := c.New().Get(sidPart).QueryStruct(params).QueryStruct(baseParams).Request()
+	req, err := c.sling.New().Get(sidPart).QueryStruct(params).QueryStruct(baseParams).Request()
 	if err == nil {
 		req.WithContext(ctx)
-		c.Do(req, v, riotError)
+		c.sling.Do(req, v, riotError)
 	}
 	if riotError.Status.StatusCode >= 400 {
 		errorMsg := fmt.Sprintf(

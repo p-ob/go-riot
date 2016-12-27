@@ -250,7 +250,7 @@ func (s *MatchService) Get(ctx context.Context, matchId int64, params *GetMatchP
 	match := new(MatchDetail)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(matchPathPart, s.client.Region),
+		addRegionToString(matchPathPart, s.client.region),
 		strconv.FormatInt(matchId, 10),
 		params,
 		match)

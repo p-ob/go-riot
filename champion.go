@@ -32,7 +32,7 @@ func (s *ChampionService) Get(ctx context.Context, championId int64) (*MatchList
 	matchList := new(MatchList)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(championPathPart, s.client.Region),
+		addRegionToString(championPathPart, s.client.region),
 		strconv.FormatInt(championId, 10),
 		nil,
 		matchList)
@@ -43,7 +43,7 @@ func (s *ChampionService) GetAll(ctx context.Context, params GetChampionsParams)
 	matchList := new(MatchList)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(championPathPart, s.client.Region),
+		addRegionToString(championPathPart, s.client.region),
 		"",
 		params,
 		matchList)

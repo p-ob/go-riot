@@ -44,7 +44,7 @@ func (s *MatchListService) GetBySummoner(ctx context.Context, summonerId int64) 
 	matchList := new(MatchList)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(matchListPathPath, s.client.Region),
+		addRegionToString(matchListPathPath, s.client.region),
 		strconv.FormatInt(summonerId, 10),
 		nil,
 		matchList)

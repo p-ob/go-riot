@@ -454,7 +454,7 @@ func (s *StaticDataService) GetChampions(ctx context.Context, params *GetChampio
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/champion",
+		addRegionToString(staticDataPathPart, s.client.region)+"/champion",
 		"",
 		params,
 		champions)
@@ -465,7 +465,7 @@ func (s *StaticDataService) GetChampion(ctx context.Context, championId int, par
 	champion := new(StaticDataChampionDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/champion",
+		addRegionToString(staticDataPathPart, s.client.region)+"/champion",
 		strconv.Itoa(championId),
 		params,
 		champion)
@@ -477,7 +477,7 @@ func (s *StaticDataService) GetItems(ctx context.Context, params *GetItemStaticD
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/item",
+		addRegionToString(staticDataPathPart, s.client.region)+"/item",
 		"",
 		params,
 		items)
@@ -489,7 +489,7 @@ func (s *StaticDataService) GetItem(ctx context.Context, itemId int, params *Get
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/item",
+		addRegionToString(staticDataPathPart, s.client.region)+"/item",
 		strconv.Itoa(itemId),
 		params,
 		item)
@@ -501,7 +501,7 @@ func (s *StaticDataService) GetLanguageStrings(ctx context.Context) (*LanguageSt
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/language-strings",
+		addRegionToString(staticDataPathPart, s.client.region)+"/language-strings",
 		"",
 		nil,
 		languageStrings)
@@ -513,7 +513,7 @@ func (s *StaticDataService) GetLanguages(ctx context.Context) (*[]string, error)
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/languages",
+		addRegionToString(staticDataPathPart, s.client.region)+"/languages",
 		"",
 		nil,
 		languages)
@@ -525,7 +525,7 @@ func (s *StaticDataService) GetMasteries(ctx context.Context, params *GetMastery
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/mastery",
+		addRegionToString(staticDataPathPart, s.client.region)+"/mastery",
 		"",
 		params,
 		masteries)
@@ -536,7 +536,7 @@ func (s *StaticDataService) GetMastery(ctx context.Context, masteryId int, param
 	mastery := new(StaticDataMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/mastery",
+		addRegionToString(staticDataPathPart, s.client.region)+"/mastery",
 		strconv.Itoa(masteryId),
 		params,
 		mastery)
@@ -547,7 +547,7 @@ func (s *StaticDataService) GetRealm(ctx context.Context) (*RealmDto, error) {
 	realm := new(RealmDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/realm",
+		addRegionToString(staticDataPathPart, s.client.region)+"/realm",
 		"",
 		nil,
 		realm)
@@ -559,7 +559,7 @@ func (s *StaticDataService) GetRunes(ctx context.Context, params *GetRuneStaticD
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/rune",
+		addRegionToString(staticDataPathPart, s.client.region)+"/rune",
 		"",
 		params,
 		runes)
@@ -570,7 +570,7 @@ func (s *StaticDataService) GetRune(ctx context.Context, runeId int, params *Get
 	rune := new(StaticDataRuneDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/rune",
+		addRegionToString(staticDataPathPart, s.client.region)+"/rune",
 		strconv.Itoa(runeId),
 		params,
 		rune)
@@ -582,7 +582,7 @@ func (s *StaticDataService) GetSummonerSpells(ctx context.Context, params *GetSu
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/summoner-spell",
+		addRegionToString(staticDataPathPart, s.client.region)+"/summoner-spell",
 		"",
 		params,
 		spells)
@@ -593,7 +593,7 @@ func (s *StaticDataService) GetSummonerSpell(ctx context.Context, runeId int, pa
 	spell := new(SummonerSpellDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/summoner-spell",
+		addRegionToString(staticDataPathPart, s.client.region)+"/summoner-spell",
 		strconv.Itoa(runeId),
 		params,
 		spell)
@@ -605,7 +605,7 @@ func (s *StaticDataService) GetVersions(ctx context.Context) (*[]string, error) 
 
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(staticDataPathPart, s.client.Region)+"/versions",
+		addRegionToString(staticDataPathPart, s.client.region)+"/versions",
 		"",
 		nil,
 		versions)

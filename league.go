@@ -45,7 +45,7 @@ func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIds ...int64)
 	leagues := new(map[string]LeagueDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(leaguePathPart, s.client.Region)+"/by-summoner",
+		addRegionToString(leaguePathPart, s.client.region)+"/by-summoner",
 		int64ArrayToCommaDelimitedList(summonerIds),
 		nil,
 		leagues)
@@ -58,7 +58,7 @@ func (s *LeagueService) GetEntriesBySummoner(ctx context.Context, summonerIds ..
 		ctx,
 		fmt.Sprintf(
 			"%s/by-summoner/%s/entry",
-			addRegionToString(leaguePathPart, s.client.Region),
+			addRegionToString(leaguePathPart, s.client.region),
 			int64ArrayToCommaDelimitedList(summonerIds)),
 		"",
 		nil,
@@ -70,7 +70,7 @@ func (s *LeagueService) GetChallenger(ctx context.Context) (*LeagueDto, error) {
 	league := new(LeagueDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(leaguePathPart, s.client.Region)+"/challenger",
+		addRegionToString(leaguePathPart, s.client.region)+"/challenger",
 		"",
 		nil,
 		league)
@@ -81,7 +81,7 @@ func (s *LeagueService) GetMaster(ctx context.Context) (*LeagueDto, error) {
 	league := new(LeagueDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(leaguePathPart, s.client.Region)+"/master",
+		addRegionToString(leaguePathPart, s.client.region)+"/master",
 		"",
 		nil,
 		league)

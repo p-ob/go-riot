@@ -32,7 +32,7 @@ func (s *ChampionMasteryService) Get(ctx context.Context, summonerId int64, cham
 	championMastery := new(ChampionMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/champion",
+		constructChampionMasteryPathPart(s.client.region, summonerId)+"/champion",
 		strconv.FormatInt(championId, 10),
 		nil,
 		championMastery)
@@ -43,7 +43,7 @@ func (s *ChampionMasteryService) GetAll(ctx context.Context, summonerId int64) (
 	championMasteries := new([]ChampionMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/champions",
+		constructChampionMasteryPathPart(s.client.region, summonerId)+"/champions",
 		"",
 		nil,
 		championMasteries)
@@ -54,7 +54,7 @@ func (s *ChampionMasteryService) GetTopChampions(ctx context.Context, summonerId
 	championMasteries := new([]ChampionMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/topchampions",
+		constructChampionMasteryPathPart(s.client.region, summonerId)+"/topchampions",
 		"",
 		params,
 		championMasteries)
@@ -65,7 +65,7 @@ func (s *ChampionMasteryService) GetScore(ctx context.Context, summonerId int64)
 	score := new(int)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/score",
+		constructChampionMasteryPathPart(s.client.region, summonerId)+"/score",
 		"",
 		nil,
 		score)

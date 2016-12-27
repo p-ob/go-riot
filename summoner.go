@@ -57,7 +57,7 @@ func (s *SummonerService) Get(ctx context.Context, summonerIds ...int64) (*map[i
 	summoners := new(map[int64]SummonerDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(summonerPathPart, s.client.Region),
+		addRegionToString(summonerPathPart, s.client.region),
 		int64ArrayToCommaDelimitedList(summonerIds),
 		nil,
 		summoners)
@@ -68,7 +68,7 @@ func (s *SummonerService) GetByName(ctx context.Context, summonerNames ...string
 	summoners := new(map[string]SummonerDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(summonerPathPart, s.client.Region)+"/by-name",
+		addRegionToString(summonerPathPart, s.client.region)+"/by-name",
 		strings.Join(summonerNames, ","),
 		nil,
 		summoners)
@@ -79,7 +79,7 @@ func (s *SummonerService) GetNames(ctx context.Context, summonerIds ...int64) (*
 	names := new(map[int64]string)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(summonerPathPart, s.client.Region),
+		addRegionToString(summonerPathPart, s.client.region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/name",
 		nil,
 		names)
@@ -90,7 +90,7 @@ func (s *SummonerService) GetMasteries(ctx context.Context, summonerIds ...int64
 	masteries := new(map[int64]MasteryPagesDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(summonerPathPart, s.client.Region),
+		addRegionToString(summonerPathPart, s.client.region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/masteries",
 		nil,
 		masteries)
@@ -101,7 +101,7 @@ func (s *SummonerService) GetRunes(ctx context.Context, summonerIds ...int64) (*
 	runes := new(map[int64]RunePagesDto)
 	err := s.client.getResource(
 		ctx,
-		addRegionToString(summonerPathPart, s.client.Region),
+		addRegionToString(summonerPathPart, s.client.region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/runes",
 		nil,
 		runes)

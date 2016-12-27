@@ -53,7 +53,7 @@ func (s *CurrentGameService) Get(ctx context.Context, summonerId int64) (*Curren
 
 	err := s.client.getResource(
 		ctx,
-		fmt.Sprintf(currentGamePathPart, mapRegionToLocationString(s.client.Region)),
+		fmt.Sprintf(currentGamePathPart, mapRegionToLocationString(s.client.region)),
 		strconv.FormatInt(summonerId, 10),
 		nil,
 		currentGameInfo)
