@@ -101,7 +101,7 @@ const statsPathPart = "api/lol/%s/v1.3/stats"
 func (s *StatsService) GetRankedBySummoner(ctx context.Context, summonerId int64, params *GetStatsParams) (*RankedStatsDto, error) {
 	stats := new(RankedStatsDto)
 
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		fmt.Sprintf("%s/by-summoner/%v/ranked", addRegionToString(statsPathPart, s.client.Region), summonerId),
 		"",
@@ -113,7 +113,7 @@ func (s *StatsService) GetRankedBySummoner(ctx context.Context, summonerId int64
 func (s *StatsService) GetSummaryBySummoner(ctx context.Context, summonerId int64, params *GetStatsParams) (*PlayerStatsSummaryListDto, error) {
 	stats := new(PlayerStatsSummaryListDto)
 
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		fmt.Sprintf("%s/by-summoner/%v/summary", addRegionToString(statsPathPart, s.client.Region), summonerId),
 		"",

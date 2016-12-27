@@ -123,7 +123,7 @@ const gamePathPart = "api/lol/%s/v1.3/game"
 
 func (s *GameService) GetRecent(ctx context.Context, summonerId int64) (*RecentGamesDto, error) {
 	games := new(RecentGamesDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		fmt.Sprintf("%s/by-summoner/%v/recent", addRegionToString(gamePathPart, s.client.Region), summonerId),
 		"",

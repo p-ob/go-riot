@@ -43,7 +43,7 @@ const leaguePathPart = "api/lol/%s/v2.5/league"
 
 func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIds ...int64) (*map[string]LeagueDto, error) {
 	leagues := new(map[string]LeagueDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(leaguePathPart, s.client.Region)+"/by-summoner",
 		int64ArrayToCommaDelimitedList(summonerIds),
@@ -54,7 +54,7 @@ func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIds ...int64)
 
 func (s *LeagueService) GetEntriesBySummoner(ctx context.Context, summonerIds ...int64) (*map[string]LeagueDto, error) {
 	leagues := new(map[string]LeagueDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		fmt.Sprintf(
 			"%s/by-summoner/%s/entry",
@@ -68,7 +68,7 @@ func (s *LeagueService) GetEntriesBySummoner(ctx context.Context, summonerIds ..
 
 func (s *LeagueService) GetChallenger(ctx context.Context) (*LeagueDto, error) {
 	league := new(LeagueDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(leaguePathPart, s.client.Region)+"/challenger",
 		"",
@@ -79,7 +79,7 @@ func (s *LeagueService) GetChallenger(ctx context.Context) (*LeagueDto, error) {
 
 func (s *LeagueService) GetMaster(ctx context.Context) (*LeagueDto, error) {
 	league := new(LeagueDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(leaguePathPart, s.client.Region)+"/master",
 		"",

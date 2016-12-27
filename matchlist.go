@@ -42,7 +42,7 @@ const matchListPathPath = "api/lol/%s/v2.2/matchlist/by-summoner"
 
 func (s *MatchListService) GetBySummoner(ctx context.Context, summonerId int64) (*MatchList, error) {
 	matchList := new(MatchList)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(matchListPathPath, s.client.Region),
 		strconv.FormatInt(summonerId, 10),

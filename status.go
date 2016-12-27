@@ -21,7 +21,7 @@ const statusPathPart = "shards"
 func (s *StatusService) Get(ctx context.Context, region Region) (*Shard, error) {
 	shard := new(Shard)
 
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		statusPathPart,
 		mapRegionToString(region),
@@ -33,7 +33,7 @@ func (s *StatusService) Get(ctx context.Context, region Region) (*Shard, error) 
 func (s *StatusService) GetAll(ctx context.Context) (*[]Shard, error) {
 	shards := new([]Shard)
 
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		statusPathPart,
 		"",

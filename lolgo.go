@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/dghubble/sling"
 	"net/http"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/dghubble/sling"
 )
 
 // lolgo metadata
@@ -72,6 +73,10 @@ type Client struct {
 
 const defaultTimeout = 30*time.Second + 500*time.Millisecond
 
+// Constructs a client to handle API calls to the Riot League of Legends public API
+// apiKey: unique key given by registering with https://developer.riotgames.com/
+// region: the region to make queries against (Na, Euw, etc.)
+// httpClient: if desired, provide your own instance of an httpClient; pass nil otherwise
 func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 
 	if httpClient == nil {
@@ -107,7 +112,7 @@ func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 	return c
 }
 
-func (c *Client) GetResource(ctx context.Context, pathPart string, sid string, params interface{}, v interface{}) error {
+func (c *Client) getResource(ctx context.Context, pathPart string, sid string, params interface{}, v interface{}) error {
 	sidPart := pathPart
 	if sid != "" {
 		sidPart = strings.Join([]string{pathPart, sid}, "/")
@@ -130,7 +135,7 @@ func (c *Client) GetResource(ctx context.Context, pathPart string, sid string, p
 	return err
 }
 
-// private methods
+// private helper methods
 
 func addRegionToString(str string, region Region) string {
 	stringRegion := mapRegionToString(region)

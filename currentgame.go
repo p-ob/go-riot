@@ -51,7 +51,7 @@ const currentGamePathPart = "observer-mode/rest/consumer/getSpectatorGameInfo/%s
 func (s *CurrentGameService) Get(ctx context.Context, summonerId int64) (*CurrentGameInfo, error) {
 	currentGameInfo := new(CurrentGameInfo)
 
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		fmt.Sprintf(currentGamePathPart, mapRegionToLocationString(s.client.Region)),
 		strconv.FormatInt(summonerId, 10),

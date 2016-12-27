@@ -30,7 +30,7 @@ const championMasteryPathPart = "championmastery/location/%s/player/%s"
 
 func (s *ChampionMasteryService) Get(ctx context.Context, summonerId int64, championId int64) (*ChampionMasteryDto, error) {
 	championMastery := new(ChampionMasteryDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/champion",
 		strconv.FormatInt(championId, 10),
@@ -41,7 +41,7 @@ func (s *ChampionMasteryService) Get(ctx context.Context, summonerId int64, cham
 
 func (s *ChampionMasteryService) GetAll(ctx context.Context, summonerId int64) (*[]ChampionMasteryDto, error) {
 	championMasteries := new([]ChampionMasteryDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/champions",
 		"",
@@ -52,7 +52,7 @@ func (s *ChampionMasteryService) GetAll(ctx context.Context, summonerId int64) (
 
 func (s *ChampionMasteryService) GetTopChampions(ctx context.Context, summonerId int64, params *GetTopChampionsParams) (*[]ChampionMasteryDto, error) {
 	championMasteries := new([]ChampionMasteryDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/topchampions",
 		"",
@@ -63,7 +63,7 @@ func (s *ChampionMasteryService) GetTopChampions(ctx context.Context, summonerId
 
 func (s *ChampionMasteryService) GetScore(ctx context.Context, summonerId int64) (*int, error) {
 	score := new(int)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		constructChampionMasteryPathPart(s.client.Region, summonerId)+"/score",
 		"",

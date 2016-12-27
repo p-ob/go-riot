@@ -18,7 +18,7 @@ const featuredGamePathPart = "observer-mode/rest/featured"
 func (s *FeaturedGamesService) Get(ctx context.Context) (*FeaturedGames, error) {
 	featuredGames := new(FeaturedGames)
 
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		featuredGamePathPart,
 		"",

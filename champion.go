@@ -30,7 +30,7 @@ const championPathPart = "api/lol/%s/v1.2/champion"
 
 func (s *ChampionService) Get(ctx context.Context, championId int64) (*MatchList, error) {
 	matchList := new(MatchList)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(championPathPart, s.client.Region),
 		strconv.FormatInt(championId, 10),
@@ -41,7 +41,7 @@ func (s *ChampionService) Get(ctx context.Context, championId int64) (*MatchList
 
 func (s *ChampionService) GetAll(ctx context.Context, params GetChampionsParams) (*MatchList, error) {
 	matchList := new(MatchList)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(championPathPart, s.client.Region),
 		"",

@@ -248,7 +248,7 @@ const matchPathPart = "api/lol/%s/v2.2/match"
 
 func (s *MatchService) Get(ctx context.Context, matchId int64, params *GetMatchParams) (*MatchDetail, error) {
 	match := new(MatchDetail)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(matchPathPart, s.client.Region),
 		strconv.FormatInt(matchId, 10),

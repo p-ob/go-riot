@@ -55,7 +55,7 @@ const summonerPathPart = "api/lol/%s/v1.4/summoner"
 
 func (s *SummonerService) Get(ctx context.Context, summonerIds ...int64) (*map[int64]SummonerDto, error) {
 	summoners := new(map[int64]SummonerDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(summonerPathPart, s.client.Region),
 		int64ArrayToCommaDelimitedList(summonerIds),
@@ -66,7 +66,7 @@ func (s *SummonerService) Get(ctx context.Context, summonerIds ...int64) (*map[i
 
 func (s *SummonerService) GetByName(ctx context.Context, summonerNames ...string) (*map[string]SummonerDto, error) {
 	summoners := new(map[string]SummonerDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(summonerPathPart, s.client.Region)+"/by-name",
 		strings.Join(summonerNames, ","),
@@ -77,7 +77,7 @@ func (s *SummonerService) GetByName(ctx context.Context, summonerNames ...string
 
 func (s *SummonerService) GetNames(ctx context.Context, summonerIds ...int64) (*map[int64]string, error) {
 	names := new(map[int64]string)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(summonerPathPart, s.client.Region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/name",
@@ -88,7 +88,7 @@ func (s *SummonerService) GetNames(ctx context.Context, summonerIds ...int64) (*
 
 func (s *SummonerService) GetMasteries(ctx context.Context, summonerIds ...int64) (*map[int64]MasteryPagesDto, error) {
 	masteries := new(map[int64]MasteryPagesDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(summonerPathPart, s.client.Region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/masteries",
@@ -99,7 +99,7 @@ func (s *SummonerService) GetMasteries(ctx context.Context, summonerIds ...int64
 
 func (s *SummonerService) GetRunes(ctx context.Context, summonerIds ...int64) (*map[int64]RunePagesDto, error) {
 	runes := new(map[int64]RunePagesDto)
-	err := s.client.GetResource(
+	err := s.client.getResource(
 		ctx,
 		addRegionToString(summonerPathPart, s.client.Region),
 		int64ArrayToCommaDelimitedList(summonerIds)+"/runes",
