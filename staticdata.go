@@ -352,67 +352,67 @@ type RealmDto struct {
 }
 
 type RuneListDto struct {
-	Basic BasicDataDto `json:"basic"`
-	Data map[string]StaticDataRuneDto `json:"data"`
-	Type string `json:"type"`
-	Version string `json:"version"`
+	Basic   BasicDataDto                 `json:"basic"`
+	Data    map[string]StaticDataRuneDto `json:"data"`
+	Type    string                       `json:"type"`
+	Version string                       `json:"version"`
 }
 
 type StaticDataRuneDto struct {
-	Colloq string `json:"colloq"`
-	ConsumeOnFull bool `json:"consumeOnFull"`
-	Consumed bool `json:"consumed"`
-	Depth int `json:"depth"`
-	Description string `json:"description"`
-	From []string `json:"from"`
-	Group string `json:"group"`
-	HideFromAll bool `json:"hideFromAll"`
-	Id int `json:"id"`
-	Image ImageDto `json:"image"`
-	InStore bool `json:"inStore"`
-	Into []string `json:"into"`
-	Maps map[string]bool `json:"maps"`
-	Name string `json:"name"`
-	PlainText string `json:"plaintext"`
-	RequiredChampion string `json:"requiredChampion"`
-	Rune MetaDataDto `json:"rune"`
-	SanitizedDescription string `json:"sanitizedDescription"`
-	SpecialRecipe int `json:"specialRecipe"`
-	Stacks int `json:"stacks"`
-	Stats BasicDataStatsDto `json:"stats"`
-	Tags []string `json:"tags"`
+	Colloq               string            `json:"colloq"`
+	ConsumeOnFull        bool              `json:"consumeOnFull"`
+	Consumed             bool              `json:"consumed"`
+	Depth                int               `json:"depth"`
+	Description          string            `json:"description"`
+	From                 []string          `json:"from"`
+	Group                string            `json:"group"`
+	HideFromAll          bool              `json:"hideFromAll"`
+	Id                   int               `json:"id"`
+	Image                ImageDto          `json:"image"`
+	InStore              bool              `json:"inStore"`
+	Into                 []string          `json:"into"`
+	Maps                 map[string]bool   `json:"maps"`
+	Name                 string            `json:"name"`
+	PlainText            string            `json:"plaintext"`
+	RequiredChampion     string            `json:"requiredChampion"`
+	Rune                 MetaDataDto       `json:"rune"`
+	SanitizedDescription string            `json:"sanitizedDescription"`
+	SpecialRecipe        int               `json:"specialRecipe"`
+	Stacks               int               `json:"stacks"`
+	Stats                BasicDataStatsDto `json:"stats"`
+	Tags                 []string          `json:"tags"`
 }
 
 type SummonerSpellListDto struct {
-	Data map[string]SummonerSpellDto
-	Type string
+	Data    map[string]SummonerSpellDto
+	Type    string
 	Version string
 }
 
 type SummonerSpellDto struct {
-	Cooldown []float64
-	CooldownBurn string
-	Cost []int
-	CostBurn string
-	CostType string
-	Description string
-	Effect [][]float64
-	EffectBurn []string
-	Id int
-	Image ImageDto
-	Key string
-	LevelTip LevelTipDto
-	Maxrank int
-	Modes []string
-	Name string
-	Range interface{}
-	RangeBurn string
-	Resource string
+	Cooldown             []float64
+	CooldownBurn         string
+	Cost                 []int
+	CostBurn             string
+	CostType             string
+	Description          string
+	Effect               [][]float64
+	EffectBurn           []string
+	Id                   int
+	Image                ImageDto
+	Key                  string
+	LevelTip             LevelTipDto
+	Maxrank              int
+	Modes                []string
+	Name                 string
+	Range                interface{}
+	RangeBurn            string
+	Resource             string
 	SanitizedDescription string
-	SanitizedTooltip string
-	SummonerLevel int
-	Tooltip string
-	Vars []SpellVarsDto
+	SanitizedTooltip     string
+	SummonerLevel        int
+	Tooltip              string
+	Vars                 []SpellVarsDto
 }
 
 type GetStaticDataBaseParams struct {
@@ -443,7 +443,7 @@ type GetRuneStaticDataParams struct {
 
 type GetSummonerSpellStaticDataParams struct {
 	GetStaticDataBaseParams
-	DataById bool `url:"dataById,omitempty"`
+	DataById  bool   `url:"dataById,omitempty"`
 	SpellData string `url:"spellData,omitempty"`
 }
 
@@ -611,4 +611,3 @@ func (s *StaticDataService) GetVersions(ctx context.Context) (*[]string, error) 
 		versions)
 	return versions, err
 }
-
