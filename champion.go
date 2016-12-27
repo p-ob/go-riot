@@ -23,7 +23,7 @@ type ChampionDto struct {
 }
 
 type GetChampionsParams struct {
-	FreeToPlay bool `url:freeToPlay,omitempty`
+	FreeToPlay bool `url:"freeToPlay,omitempty"`
 }
 
 const championPathPart = "api/lol/%s/v1.2/champion"
