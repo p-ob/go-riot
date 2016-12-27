@@ -2,6 +2,7 @@ package lolgo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/dghubble/sling"
 	"net/http"
@@ -9,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"errors"
 )
 
 // lolgo metadata
