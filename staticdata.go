@@ -384,35 +384,35 @@ type StaticDataRuneDto struct {
 }
 
 type SummonerSpellListDto struct {
-	Data    map[string]SummonerSpellDto
-	Type    string
-	Version string
+	Data    map[string]SummonerSpellDto `json:"data"`
+	Type    string                      `json:"type"`
+	Version string                      `json:"version"`
 }
 
 type SummonerSpellDto struct {
-	Cooldown             []float64
-	CooldownBurn         string
-	Cost                 []int
-	CostBurn             string
-	CostType             string
-	Description          string
-	Effect               [][]float64
-	EffectBurn           []string
-	Id                   int
-	Image                ImageDto
-	Key                  string
-	LevelTip             LevelTipDto
-	Maxrank              int
-	Modes                []string
-	Name                 string
-	Range                interface{}
-	RangeBurn            string
-	Resource             string
-	SanitizedDescription string
-	SanitizedTooltip     string
-	SummonerLevel        int
-	Tooltip              string
-	Vars                 []SpellVarsDto
+	Cooldown             []float64      `json:"cooldown"`
+	CooldownBurn         string         `json:"cooldownBurn"`
+	Cost                 []int          `json:"cost"`
+	CostBurn             string         `json:"costBurn"`
+	CostType             string         `json:"costType"`
+	Description          string         `json:"description"`
+	Effect               [][]float64    `json:"effect"`
+	EffectBurn           []string       `json:"effectBurn"`
+	Id                   int            `json:"id"`
+	Image                ImageDto       `json:"image"`
+	Key                  string         `json:"key"`
+	LevelTip             LevelTipDto    `json:"levelTip"`
+	Maxrank              int            `json:"maxrank"`
+	Modes                []string       `json:"modes"`
+	Name                 string         `json:"name"`
+	Range                interface{}    `json:"range"`
+	RangeBurn            string         `json:"rangeBurn"`
+	Resource             string         `json:"resource"`
+	SanitizedDescription string         `json:"sanitizedDescription"`
+	SanitizedTooltip     string         `json:"sanitizedTooltip"`
+	SummonerLevel        int            `json:"summonerLevel"`
+	Tooltip              string         `json:"tooltip"`
+	Vars                 []SpellVarsDto `json:"vars"`
 }
 
 type GetStaticDataBaseParams struct {
@@ -567,14 +567,14 @@ func (s *StaticDataService) GetRunes(ctx context.Context, params *GetRuneStaticD
 }
 
 func (s *StaticDataService) GetRune(ctx context.Context, runeId int, params *GetRuneStaticDataParams) (*StaticDataRuneDto, error) {
-	rune := new(StaticDataRuneDto)
+	r := new(StaticDataRuneDto)
 	err := s.client.getResource(
 		ctx,
 		addRegionToString(staticDataPathPart, s.client.region)+"/rune",
 		strconv.Itoa(runeId),
 		params,
-		rune)
-	return rune, err
+		r)
+	return r, err
 }
 
 func (s *StaticDataService) GetSummonerSpells(ctx context.Context, params *GetSummonerSpellStaticDataParams) (*SummonerSpellListDto, error) {

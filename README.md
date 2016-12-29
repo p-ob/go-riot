@@ -17,6 +17,10 @@ s, _ := client.Summoner.Get(ctx, summonerId)
 // print Drunk7Irishman
 thisSummoner := (*s)[summonerId]  
 fmt.Printf("Summoner:\n%+v\n", thisSummoner)
+
+// OUTPUT:
+// >> Summoner:
+//    {Id:25886496 Name:Drunk7Irishman ProfileIconId:744 SummonerLevel:30 RevisionDate:1482381110000}
 ```
 
 Resources mapped:  

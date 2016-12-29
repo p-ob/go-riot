@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/dghubble/sling"
 	"net/http"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
-	"github.com/dghubble/sling"
 )
 
 // lolgo metadata
@@ -76,13 +76,13 @@ const defaultTimeout = 30*time.Second + 500*time.Millisecond
 // region: the region to make queries against (Na, Euw, etc.)
 // httpClient: if desired, provide your own instance of an httpClient; pass nil otherwise
 func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
-
 	if httpClient == nil {
 		httpClient = &http.Client{Timeout: defaultTimeout}
 	}
 
 	slingClient := sling.New().Client(httpClient).Base(addRegionToString(BaseURL, region))
-	userAgentString := "%s/%v sling/1.1.0 (https://github.com/dghubble/sling) %s (%s/%s)"
+	userAgentString := "%s/%v (https://github.com/p-ob/lolgo) " +
+		"sling/1.1.0 (https://github.com/dghubble/sling) %s (%s/%s)"
 	slingClient.Set(
 		"User-Agent",
 		fmt.Sprintf(
