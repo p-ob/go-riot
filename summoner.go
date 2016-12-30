@@ -44,7 +44,7 @@ type RunePageDto struct {
 	Id      int       `json:"id"`
 	Name    string    `json:"name"`
 	Current bool      `json:"current"`
-	slots   []RuneDto `json:"slots"`
+	Slots   []RuneDto `json:"slots"`
 }
 
 type RuneDto struct {

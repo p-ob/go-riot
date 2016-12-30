@@ -26,7 +26,7 @@ type GetTopChampionsParams struct {
 	Count int `url:"count,omitempty"`
 }
 
-const championMasteryPathPart = "championmastery/location/%s/player/%s"
+const championMasteryPathPart = "championmastery/location/%s/player/%v"
 
 func (s *ChampionMasteryService) Get(ctx context.Context, summonerId int64, championId int64) (*ChampionMasteryDto, error) {
 	championMastery := new(ChampionMasteryDto)
