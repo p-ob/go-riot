@@ -146,8 +146,8 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 		if e == nil {
 			riotError.XRateLimitCount = int(xRateLimitCount)
 		}
-
 	}
+
 	// if the API returns a non-2xx response, return that to the caller
 	if riotError.Status.StatusCode >= 300 {
 		return riotError
@@ -156,11 +156,7 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 }
 
 func (e *RiotApiError) Error() string {
-	errorMsg := fmt.Sprintf(
-		"Status: %v; Reason: %s",
-		e.Status.StatusCode,
-		e.Status.Message)
-	return errorMsg
+	return fmt.Sprintf("%+v", *e)
 }
 
 // private helper methods
