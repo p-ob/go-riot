@@ -2,6 +2,7 @@ package lolgo
 
 import (
 	"context"
+	"errors"
 	"strings"
 )
 
@@ -26,7 +27,7 @@ type MasteryPageDto struct {
 	Id        int          `json:"id"`
 	Name      string       `json:"name"`
 	Current   bool         `json:"current"`
-	Masteries []MasteryDto `json:"masteries,omitempty"`
+	Masteries []MasteryDto `json:"masteries"`
 }
 
 type MasteryDto struct {
@@ -43,7 +44,7 @@ type RunePageDto struct {
 	Id      int       `json:"id"`
 	Name    string    `json:"name"`
 	Current bool      `json:"current"`
-	slots   []RuneDto `json:"slots,omitempty"`
+	slots   []RuneDto `json:"slots"`
 }
 
 type RuneDto struct {
@@ -54,6 +55,9 @@ type RuneDto struct {
 const summonerPathPart = "api/lol/%s/v1.4/summoner"
 
 func (s *SummonerService) Get(ctx context.Context, summonerIds ...int64) (*map[int64]SummonerDto, error) {
+	if len(summonerIds) > 40 {
+		return nil, errors.New("Cannot pass more than 40 summoners to retrieve")
+	}
 	summoners := new(map[int64]SummonerDto)
 	err := s.client.getResource(
 		ctx,
@@ -65,6 +69,9 @@ func (s *SummonerService) Get(ctx context.Context, summonerIds ...int64) (*map[i
 }
 
 func (s *SummonerService) GetByName(ctx context.Context, summonerNames ...string) (*map[string]SummonerDto, error) {
+	if len(summonerNames) > 40 {
+		return nil, errors.New("Cannot pass more than 40 summoners to retrieve")
+	}
 	summoners := new(map[string]SummonerDto)
 	err := s.client.getResource(
 		ctx,
@@ -76,6 +83,9 @@ func (s *SummonerService) GetByName(ctx context.Context, summonerNames ...string
 }
 
 func (s *SummonerService) GetNames(ctx context.Context, summonerIds ...int64) (*map[int64]string, error) {
+	if len(summonerIds) > 40 {
+		return nil, errors.New("Cannot pass more than 40 summoners to retrieve")
+	}
 	names := new(map[int64]string)
 	err := s.client.getResource(
 		ctx,
@@ -87,6 +97,9 @@ func (s *SummonerService) GetNames(ctx context.Context, summonerIds ...int64) (*
 }
 
 func (s *SummonerService) GetMasteries(ctx context.Context, summonerIds ...int64) (*map[int64]MasteryPagesDto, error) {
+	if len(summonerIds) > 40 {
+		return nil, errors.New("Cannot pass more than 40 summoners to retrieve")
+	}
 	masteries := new(map[int64]MasteryPagesDto)
 	err := s.client.getResource(
 		ctx,
@@ -98,6 +111,9 @@ func (s *SummonerService) GetMasteries(ctx context.Context, summonerIds ...int64
 }
 
 func (s *SummonerService) GetRunes(ctx context.Context, summonerIds ...int64) (*map[int64]RunePagesDto, error) {
+	if len(summonerIds) > 40 {
+		return nil, errors.New("Cannot pass more than 40 summoners to retrieve")
+	}
 	runes := new(map[int64]RunePagesDto)
 	err := s.client.getResource(
 		ctx,

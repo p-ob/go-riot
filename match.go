@@ -185,7 +185,7 @@ type Team struct {
 type BannedChampion struct {
 	ChampionId int64 `json:"championId"`
 	PickTurn   int   `json:"pickTurn"`
-	TeamId     int64 `json:"teamId,omitempty"`
+	TeamId     int64 `json:"teamId"`
 }
 
 type Timeline struct {

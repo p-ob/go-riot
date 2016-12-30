@@ -2,7 +2,6 @@ package lolgo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/dghubble/sling"
 	"net/http"
@@ -21,12 +20,15 @@ type BaseParams struct {
 }
 
 type RiotApiError struct {
-	Status RiotApiErrorStatus `json:"status,omitempty"`
+	Status          RiotApiErrorStatus `json:"status"`
+	XRateLimitType  string             `json:"-"`
+	RetryAfter      int                `json:"-"`
+	XRateLimitCount int                `json:"-"`
 }
 
 type RiotApiErrorStatus struct {
-	StatusCode int    `json:"status_code,omitempty"`
-	Message    string `json:"message,omitempty"`
+	StatusCode int    `json:"status_code"`
+	Message    string `json:"message"`
 }
 
 type Region int
@@ -124,18 +126,41 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 	baseParams := new(BaseParams)
 	baseParams.ApiKey = c.ApiKey
 	req, err := c.sling.New().Get(sidPart).QueryStruct(params).QueryStruct(baseParams).Request()
-	if err == nil {
-		req.WithContext(ctx)
-		c.sling.Do(req, v, riotError)
+	if err != nil {
+		return err
 	}
-	if riotError.Status.StatusCode >= 400 {
-		errorMsg := fmt.Sprintf(
-			"Status: %v; Reason: %s",
-			riotError.Status.StatusCode,
-			riotError.Status.Message)
-		err = errors.New(errorMsg)
+	req.WithContext(ctx)
+	resp, err := c.sling.Do(req, v, riotError)
+	if err != nil {
+		return err
 	}
-	return err
+
+	// handle special headers supplied when Riot returns a 429 response
+	if resp.StatusCode == http.StatusTooManyRequests {
+		riotError.XRateLimitType = resp.Header.Get("X-Rate-Limit-Type")
+		retryAfter, e := strconv.ParseInt(resp.Header.Get("Retry-After"), 10, 32)
+		if e == nil {
+			riotError.RetryAfter = int(retryAfter)
+		}
+		xRateLimitCount, e := strconv.ParseInt(resp.Header.Get("X-Rate-Limit-Count"), 10, 32)
+		if e == nil {
+			riotError.XRateLimitCount = int(xRateLimitCount)
+		}
+
+	}
+	// if the API returns a non-2xx response, return that to the caller
+	if riotError.Status.StatusCode >= 300 {
+		return riotError
+	}
+	return nil
+}
+
+func (e *RiotApiError) Error() string {
+	errorMsg := fmt.Sprintf(
+		"Status: %v; Reason: %s",
+		e.Status.StatusCode,
+		e.Status.Message)
+	return errorMsg
 }
 
 // private helper methods
