@@ -4,18 +4,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"testing"
+	"time"
 )
 
 func TestGetSummoner(t *testing.T) {
 	// set up data
 	BaseURL = "http://example.com"
 	region := Na
-	summonerId := int64(1)
-	summoner := SummonerDto{Id: summonerId, Name: "Test", ProfileIconId: 1, RevisionDate: 12345678910, SummonerLevel: 30}
+	summoner := generateSummoner()
+	summonerId := summoner.Id
 	getSummonerPathPart := fmt.Sprintf("/%s/%v", addRegionToString(summonerPathPart, region), summonerId)
 	getSummonerResponse := make(map[int64]SummonerDto)
 	getSummonerResponse[summonerId] = summoner
@@ -53,4 +55,40 @@ func mockClient(region Region) (*http.Client, *http.ServeMux, *httptest.Server, 
 	httpClient := &http.Client{Transport: transport}
 
 	return httpClient, mux, server, NewClient("", region, httpClient)
+}
+
+func generateSummoner() SummonerDto {
+	return SummonerDto{
+		Id:            rand.Int63(),
+		Name:          randStringBytesMaskImprSrc(10),
+		ProfileIconId: rand.Int(),
+		RevisionDate:  rand.Int63(),
+		SummonerLevel: rand.Int63n(30),
+	}
+}
+
+// http://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-golang
+func randStringBytesMaskImprSrc(n int) string {
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	const (
+		letterIdxBits = 6                    // 6 bits to represent a letter index
+		letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+		letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+	)
+	var src = rand.NewSource(time.Now().UnixNano())
+	b := make([]byte, n)
+	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
+	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = src.Int63(), letterIdxMax
+		}
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
+			b[i] = letterBytes[idx]
+			i--
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+
+	return string(b)
 }
