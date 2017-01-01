@@ -22,7 +22,7 @@ type SummonerDto struct {
 
 // MasteryPagesDto is the container for all mastery pages for a summoner
 type MasteryPagesDto struct {
-	SummonerID int              `json:"summonerId"`
+	SummonerID int64            `json:"summonerId"`
 	Pages      []MasteryPageDto `json:"pages"`
 }
 
@@ -42,7 +42,7 @@ type MasteryDto struct {
 
 // RunePagesDto is the container for all rune pages for a summoner
 type RunePagesDto struct {
-	SummonerID int           `json:"summonerId"`
+	SummonerID int64         `json:"summonerId"`
 	Pages      []RunePageDto `json:"pages"`
 }
 

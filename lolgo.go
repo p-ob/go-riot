@@ -162,11 +162,13 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 	baseParams.APIKey = c.APIKey
 	req, err := c.sling.New().Get(sidPart).QueryStruct(params).QueryStruct(baseParams).Request()
 	if err != nil {
+		v = nil
 		return err
 	}
 	req.WithContext(ctx)
 	resp, err := c.sling.Do(req, v, riotError)
 	if err != nil {
+		v = nil
 		return err
 	}
 
@@ -183,8 +185,9 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 		}
 	}
 
-	// if the API returns a non-2xx response, return that to the caller
-	if riotError.Status.StatusCode >= 300 {
+	// if the API returns an error status code (4xx or 5xx), return the error
+	if riotError.Status.StatusCode >= 400 {
+		v = nil
 		return riotError
 	}
 	return nil
