@@ -11,18 +11,18 @@ client := lolgo.NewClient(apiKey, lolgo.Na, httpClient)
 ctx := context.Background()  
 
 // Drunk7Irishman's summoner id
-summonerId := int64(25886496)  
+summonerID := int64(25886496)  
 
 // get Drunk7Irishman
-s, _ := client.Summoner.Get(ctx, summonerId)  
+s, _ := client.Summoner.Get(ctx, summonerID)  
 
 // print Drunk7Irishman
-thisSummoner := (*s)[summonerId]  
+thisSummoner := (*s)[summonerID]  
 fmt.Printf("Summoner:\n%+v\n", thisSummoner)
 
 // OUTPUT:
 // >> Summoner:
-//    {Id:25886496 Name:Drunk7Irishman ProfileIconId:744 SummonerLevel:30 RevisionDate:1482381110000}
+//    {ID:25886496 Name:Drunk7Irishman ProfileIconID:744 SummonerLevel:30 RevisionDate:1482381110000}
 ```
 
 Resources mapped:  
