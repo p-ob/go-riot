@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-const Region = lolgo.Na
+const region = lolgo.Na
 
 func main() {
 	apiKey, err := getAPIKey()
@@ -19,7 +19,7 @@ func main() {
 		fmt.Printf("Error: %v", err)
 		return
 	}
-	client := lolgo.NewClient(apiKey, Region, nil)
+	client := lolgo.NewClient(apiKey, region, nil)
 	ctx := context.Background()
 
 	reader := bufio.NewReader(os.Stdin)
