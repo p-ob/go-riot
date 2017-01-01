@@ -3,6 +3,9 @@ language: go
 go:
     - 1.x
 
+before_script:
+    - chmod +x ./test
+
 install:
     - go get github.com/golang/lint/golint
     - go get -v -t .
