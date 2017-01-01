@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/p-ob/lolgo"
+	"bufio"
 	"context"
 	"fmt"
+	"github.com/p-ob/lolgo"
 	"io/ioutil"
-	"path/filepath"
-	"bufio"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
