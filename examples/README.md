@@ -10,4 +10,4 @@ go run example.go
 ```
 
 The example script will prompt for a summoner name to pull data. The region is hard coded to Na; to query different 
-regions modify the `Region` const defined at the top of `examples\example.go`.
+regions modify the `region` const defined at the top of `examples\example.go`.

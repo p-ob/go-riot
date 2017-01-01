@@ -16,7 +16,7 @@ const region = lolgo.Na
 func main() {
 	apiKey, err := getAPIKey()
 	if err != nil {
-		fmt.Printf("Error: %v", err)
+		printError(err)
 		return
 	}
 	client := lolgo.NewClient(apiKey, region, nil)
@@ -29,19 +29,31 @@ func main() {
 	summonerName = strings.TrimSpace(strings.ToLower(summonerName))
 	s, err := client.Summoner.GetByName(ctx, summonerName)
 	if err != nil {
-		fmt.Printf("Error: %v", err)
+		printError(err)
 		return
 	}
 	thisSummoner := (*s)[strings.ToLower(summonerName)]
 	fmt.Printf("Summoner:\n%+v\n", thisSummoner)
 
-	m, _ := client.MatchList.GetBySummoner(ctx, thisSummoner.ID)
+	m, err := client.MatchList.GetBySummoner(ctx, thisSummoner.ID)
+	if err != nil {
+		printError(err)
+		return
+	}
 	fmt.Printf("MatchList: \n%+v\n", *m)
 
-	g, _ := client.Game.GetRecent(ctx, thisSummoner.ID)
+	g, err := client.Game.GetRecent(ctx, thisSummoner.ID)
+	if err != nil {
+		printError(err)
+		return
+	}
 	fmt.Printf("Games: \n%+v\n", *g)
 
-	championMastery, _ := client.ChampionMastery.GetAll(ctx, thisSummoner.ID)
+	championMastery, err := client.ChampionMastery.GetAll(ctx, thisSummoner.ID)
+	if err != nil {
+		printError(err)
+		return
+	}
 	fmt.Printf("Champion mastery: \n%+v\n", *championMastery)
 }
 
@@ -55,4 +67,8 @@ func getAPIKey() (string, error) {
 		return "", err
 	}
 	return string(b), nil
+}
+
+func printError(err error) {
+	fmt.Printf("Error: %v", err)
 }
