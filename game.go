@@ -5,39 +5,44 @@ import (
 	"fmt"
 )
 
+// GameService is the endpoint to use to get general information about games
 type GameService struct {
 	client *Client
 }
 
+// RecentGamesDto is the container with recent games for a summoner
 type RecentGamesDto struct {
 	Games      []GameDto `json:"games"`
-	SummonerId int64     `json:"summonerId"`
+	SummonerID int64     `json:"summonerId"`
 }
 
+// GameDto is the container for a single game
 type GameDto struct {
-	ChampionId    int         `json:"championId"`
+	ChampionID    int         `json:"championId"`
 	CreateDate    int64       `json:"createDate"`
 	FellowPlayers []PlayerDto `json:"fellowPlayers"`
-	GameId        int64       `json:"gameId"`
+	GameID        int64       `json:"gameId"`
 	GameMode      string      `json:"gameMode"`
 	GameType      string      `json:"gameType"`
 	Invalid       bool        `json:"invalid"`
-	IpEarned      int         `json:"ipEarned"`
+	IPEarned      int         `json:"ipEarned"`
 	Level         int         `json:"level"`
-	MapId         int         `json:"mapId"`
+	MapID         int         `json:"mapId"`
 	Spell1        int         `json:"spell1"`
 	Spell2        int         `json:"spell2"`
 	Stats         RawStatsDto `json:"stats"`
 	SubType       string      `json:"subType"`
-	TeamId        int         `json:"teamId"`
+	TeamID        int         `json:"teamId"`
 }
 
+// PlayerDto is the container for basic player info in a game
 type PlayerDto struct {
-	ChampionId int   `json:"championId"`
-	SummonerId int64 `json:"summonerId"`
-	TeamId     int   `json:"teamId"`
+	ChampionID int   `json:"championId"`
+	SummonerID int64 `json:"summonerId"`
+	TeamID     int   `json:"teamId"`
 }
 
+// RawStatsDto is the container for a player's raw stats
 type RawStatsDto struct {
 	Assists                         int  `json:"assists"`
 	BarracksKilled                  int  `json:"barracksKilled"`
@@ -121,13 +126,15 @@ type RawStatsDto struct {
 
 const gamePathPart = "api/lol/%s/v1.3/game"
 
-func (s *GameService) GetRecent(ctx context.Context, summonerId int64) (*RecentGamesDto, error) {
+// GetRecent gets the recent games for a summonerID
+func (s *GameService) GetRecent(ctx context.Context, summonerID int64) (*RecentGamesDto, error) {
 	games := new(RecentGamesDto)
 	err := s.client.getResource(
 		ctx,
-		fmt.Sprintf("%s/by-summoner/%v/recent", addRegionToString(gamePathPart, s.client.region), summonerId),
+		fmt.Sprintf("%s/by-summoner/%v/recent", addRegionToString(gamePathPart, s.client.region), summonerID),
 		"",
 		nil,
-		games)
+		games,
+	)
 	return games, err
 }

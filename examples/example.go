@@ -14,7 +14,7 @@ import (
 const Region = lolgo.Na
 
 func main() {
-	apiKey, err := getApiKey()
+	apiKey, err := getAPIKey()
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 		return
@@ -35,17 +35,17 @@ func main() {
 	thisSummoner := (*s)[strings.ToLower(summonerName)]
 	fmt.Printf("Summoner:\n%+v\n", thisSummoner)
 
-	m, _ := client.MatchList.GetBySummoner(ctx, thisSummoner.Id)
+	m, _ := client.MatchList.GetBySummoner(ctx, thisSummoner.ID)
 	fmt.Printf("MatchList: \n%+v\n", *m)
 
-	g, _ := client.Game.GetRecent(ctx, thisSummoner.Id)
+	g, _ := client.Game.GetRecent(ctx, thisSummoner.ID)
 	fmt.Printf("Games: \n%+v\n", *g)
 
-	championMastery, _ := client.ChampionMastery.GetAll(ctx, thisSummoner.Id)
+	championMastery, _ := client.ChampionMastery.GetAll(ctx, thisSummoner.ID)
 	fmt.Printf("Champion mastery: \n%+v\n", *championMastery)
 }
 
-func getApiKey() (string, error) {
+func getAPIKey() (string, error) {
 	file, err := filepath.Abs("key.txt")
 	if err != nil {
 		return "", err

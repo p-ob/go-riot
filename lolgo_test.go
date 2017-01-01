@@ -18,11 +18,11 @@ func TestGetSummoner(t *testing.T) {
 	BaseURL = "http://example.com"
 	region := Na
 	summoner := generateSummoner()
-	getSummonerPathPart := fmt.Sprintf("/%s/%v", addRegionToString(summonerPathPart, region), summoner.Id)
+	getSummonerPathPart := fmt.Sprintf("/%s/%v", addRegionToString(summonerPathPart, region), summoner.ID)
 	getSummonerResponse := make(map[int64]SummonerDto)
-	getSummonerResponse[summoner.Id] = summoner
+	getSummonerResponse[summoner.ID] = summoner
 
-	summonerJsonByteArray, _ := json.Marshal(getSummonerResponse)
+	summonerJSONByteArray, _ := json.Marshal(getSummonerResponse)
 
 	_, mux, server, client := mockClient(region)
 	defer server.Close()
@@ -30,12 +30,12 @@ func TestGetSummoner(t *testing.T) {
 	mux.HandleFunc(getSummonerPathPart, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(summonerJsonByteArray)
+		w.Write(summonerJSONByteArray)
 	})
 
 	ctx := context.Background()
-	retrievedSummonerMap, err := client.Summoner.Get(ctx, summoner.Id)
-	retrievedSummoner := (*retrievedSummonerMap)[summoner.Id]
+	retrievedSummonerMap, err := client.Summoner.Get(ctx, summoner.ID)
+	retrievedSummoner := (*retrievedSummonerMap)[summoner.ID]
 	if err != nil {
 		t.Errorf("expected nil, got %v", err)
 	}
@@ -59,9 +59,9 @@ func mockClient(region Region) (*http.Client, *http.ServeMux, *httptest.Server, 
 
 func generateSummoner() SummonerDto {
 	return SummonerDto{
-		Id:            rand.Int63(),
+		ID:            rand.Int63(),
 		Name:          randStringBytesMaskImprSrc(10),
-		ProfileIconId: rand.Int(),
+		ProfileIconID: rand.Int(),
 		RevisionDate:  rand.Int63(),
 		SummonerLevel: rand.Int63n(30),
 	}

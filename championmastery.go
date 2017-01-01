@@ -6,72 +6,83 @@ import (
 	"strconv"
 )
 
+// ChampionMasteryService is the endpoint to use to get champion mastery information
 type ChampionMasteryService struct {
 	client *Client
 }
 
+// ChampionMasteryDto is the container returned per champion mastery
 type ChampionMasteryDto struct {
 	ChampionPoints               int   `json:"championPoints"`
-	PlayerId                     int   `json:"playerId"`
+	PlayerID                     int   `json:"playerId"`
 	ChampionPointsUntilNextLevel int   `json:"championPointsUntilNextLevel"`
 	ChestGranted                 bool  `json:"chestGranted"`
 	ChampionLevel                int   `json:"championLevel"`
 	TokensEarned                 int   `json:"tokensEarned"`
-	ChampionId                   int   `json:"championId"`
+	ChampionID                   int   `json:"championId"`
 	ChampionPointsSinceLastLevel int   `json:"championPointsSinceLastLevel"`
 	LastPlayTime                 int64 `json:"lastPlayTime"`
 }
 
+// GetTopChampionsParams are optional query params
 type GetTopChampionsParams struct {
 	Count int `url:"count,omitempty"`
 }
 
 const championMasteryPathPart = "championmastery/location/%s/player/%v"
 
-func (s *ChampionMasteryService) Get(ctx context.Context, summonerId int64, championId int64) (*ChampionMasteryDto, error) {
+// Get gets the champion mastery for a single championID
+func (s *ChampionMasteryService) Get(ctx context.Context, summonerID int64, championID int64) (*ChampionMasteryDto, error) {
 	championMastery := new(ChampionMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.region, summonerId)+"/champion",
-		strconv.FormatInt(championId, 10),
+		constructChampionMasteryPathPart(s.client.region, summonerID)+"/champion",
+		strconv.FormatInt(championID, 10),
 		nil,
-		championMastery)
+		championMastery,
+	)
 	return championMastery, err
 }
 
-func (s *ChampionMasteryService) GetAll(ctx context.Context, summonerId int64) (*[]ChampionMasteryDto, error) {
+// GetAll gets all champion masteries for a summonerID
+func (s *ChampionMasteryService) GetAll(ctx context.Context, summonerID int64) (*[]ChampionMasteryDto, error) {
 	championMasteries := new([]ChampionMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.region, summonerId)+"/champions",
+		constructChampionMasteryPathPart(s.client.region, summonerID)+"/champions",
 		"",
 		nil,
-		championMasteries)
+		championMasteries,
+	)
 	return championMasteries, err
 }
 
-func (s *ChampionMasteryService) GetTopChampions(ctx context.Context, summonerId int64, params *GetTopChampionsParams) (*[]ChampionMasteryDto, error) {
+// GetTopChampions gets the top params.Count champion masteries by score (or 3 by default)
+func (s *ChampionMasteryService) GetTopChampions(ctx context.Context, summonerID int64, params *GetTopChampionsParams) (*[]ChampionMasteryDto, error) {
 	championMasteries := new([]ChampionMasteryDto)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.region, summonerId)+"/topchampions",
+		constructChampionMasteryPathPart(s.client.region, summonerID)+"/topchampions",
 		"",
 		params,
-		championMasteries)
+		championMasteries,
+	)
 	return championMasteries, err
 }
 
-func (s *ChampionMasteryService) GetScore(ctx context.Context, summonerId int64) (*int, error) {
+// GetScore gets the total score for a summonerID
+func (s *ChampionMasteryService) GetScore(ctx context.Context, summonerID int64) (*int, error) {
 	score := new(int)
 	err := s.client.getResource(
 		ctx,
-		constructChampionMasteryPathPart(s.client.region, summonerId)+"/score",
+		constructChampionMasteryPathPart(s.client.region, summonerID)+"/score",
 		"",
 		nil,
-		score)
+		score,
+	)
 	return score, err
 }
 
-func constructChampionMasteryPathPart(region Region, summonerId int64) string {
-	return fmt.Sprintf(championMasteryPathPart, mapRegionToLocationString(region), summonerId)
+func constructChampionMasteryPathPart(region Region, summonerID int64) string {
+	return fmt.Sprintf(championMasteryPathPart, mapRegionToLocationString(region), summonerID)
 }

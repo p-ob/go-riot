@@ -5,15 +5,17 @@ import (
 	"strconv"
 )
 
+// MatchService is the endpoint to use to get detailed match information
 type MatchService struct {
 	client *Client
 }
 
+// MatchDetail is the container for a given match information
 type MatchDetail struct {
-	MapId                 int                   `json:"mapId"`
+	MapID                 int                   `json:"mapId"`
 	MatchCreation         int64                 `json:"matchCreation"`
 	MatchDuration         int64                 `json:"matchDuration"`
-	MatchId               int64                 `json:"matchId"`
+	MatchID               int64                 `json:"matchId"`
 	MatchMode             string                `json:"matchMode"`
 	MatchType             string                `json:"matchType"`
 	MatchVersion          string                `json:"matchVersion"`
@@ -26,41 +28,47 @@ type MatchDetail struct {
 	Timeline              Timeline              `json:"timeline"`
 }
 
+// ParticipantIdentity is the container for a given participant in a match
 type ParticipantIdentity struct {
-	ParticipantId int    `json:"participantId"`
+	ParticipantID int    `json:"participantId"`
 	Player        Player `json:"player"`
 }
 
+// Player is the container with summoner information for a given match
 type Player struct {
-	MatchHistoryUri string `json:"matchHistoryUri"`
+	MatchHistoryURI string `json:"matchHistoryUri"`
 	ProfileIcon     int    `json:"profileIcon"`
-	SummonerId      int64  `json:"summonerId"`
+	SummonerID      int64  `json:"summonerId"`
 	SummonerName    string `json:"summonerName"`
 }
 
+// Participant is the container for participant information in a game
 type Participant struct {
-	ChampionId                int                 `json:"championId"`
+	ChampionID                int                 `json:"championId"`
 	HighestAchievedSeasonTier string              `json:"highestAchievedSeasonTier"`
 	Masteries                 []Mastery           `json:"masteries"`
-	ParticipantId             int                 `json:"participantId"`
+	ParticipantID             int                 `json:"participantId"`
 	Runes                     []Rune              `json:"runes"`
-	Spell1Id                  int                 `json:"spell1Id"`
-	Spell2Id                  int                 `json:"spell2Id"`
+	Spell1ID                  int                 `json:"spell1Id"`
+	Spell2ID                  int                 `json:"spell2Id"`
 	Stats                     ParticipantStats    `json:"stats"`
-	TeamId                    int                 `json:"teamId"`
+	TeamID                    int                 `json:"teamId"`
 	Timeline                  ParticipantTimeline `json:"timeline"`
 }
 
+// Mastery is the container for basic mastery utilization information
 type Mastery struct {
-	MasteryId int64 `json:"masteryId"`
+	MasteryID int64 `json:"masteryId"`
 	Rank      int64 `json:"rank"`
 }
 
+// Rune is the cotainer for basic rune utilization information
 type Rune struct {
 	Rank   int64 `json:"rank"`
-	RuneId int64 `json:"runeId"`
+	RuneID int64 `json:"runeId"`
 }
 
+// ParticipantStats is the detailed information for a participant
 type ParticipantStats struct {
 	Assists                         int64 `json:"assists"`
 	ChampLevel                      int64 `json:"champLevel"`
@@ -126,6 +134,7 @@ type ParticipantStats struct {
 	Winner                          bool  `json:"winner"`
 }
 
+// ParticipantTimeline is the container for a snapshot of participant information at a given time
 type ParticipantTimeline struct {
 	AncientGolemAssistsPerMinCounts ParticipantTimelineData `json:"ancientGolemAssistsPerMinCounts"`
 	AncientGolemKillsPerMinCounts   ParticipantTimelineData `json:"ancientGolemKillsPerMinCounts"`
@@ -156,6 +165,7 @@ type ParticipantTimeline struct {
 	XpPerMinDeltas                  ParticipantTimelineData `json:"xpPerMinDeltas"`
 }
 
+// ParticipantTimelineData is the container to display progression of stats
 type ParticipantTimelineData struct {
 	TenToTwenty    float64 `json:"tenToTwenty"`
 	ThirtyToTen    float64 `json:"thirtyToTen"`
@@ -163,6 +173,7 @@ type ParticipantTimelineData struct {
 	ZeroToTen      float64 `json:"zeroToTen"`
 }
 
+// Team is the container with basic team information
 type Team struct {
 	Bans                 []BannedChampion `json:"bans"`
 	BaronKills           int              `json:"baronKills"`
@@ -176,83 +187,92 @@ type Team struct {
 	FirstTower           bool             `json:"firstTower"`
 	InhibitorKills       int              `json:"inhibitorKills"`
 	RiftHeraldKills      int              `json:"riftHeraldKills"`
-	TeamId               int              `json:"teamId"`
+	TeamID               int              `json:"teamId"`
 	TowerKills           int              `json:"TowerKills"`
 	VilemawKills         int              `json:"vilemawKills"`
 	Winner               bool             `json:"winner"`
 }
 
+// BannedChampion is the container with banning phase information
 type BannedChampion struct {
-	ChampionId int64 `json:"championId"`
+	ChampionID int64 `json:"championId"`
 	PickTurn   int   `json:"pickTurn"`
-	TeamId     int64 `json:"teamId"`
+	TeamID     int64 `json:"teamId"`
 }
 
+// Timeline is the container to show events in a match
 type Timeline struct {
 	FrameInterval int64   `json:"frameInterval"`
 	Frames        []Frame `json:"frames"`
 }
 
+// Frame is the container for a snapshot in time
 type Frame struct {
-	Events            []Event                     `json:"events"`
-	ParticipantFrames map[string]ParticipantFrame `json:"participantFrames"`
+	Events            []Event                  `json:"events"`
+	ParticipantFrames map[int]ParticipantFrame `json:"participantFrames"`
 }
 
+// Event is the information for a given moment
 type Event struct {
 	AscendedType            string   `json:"ascendedType"`
-	AssistingParticipantIds []int    `json:"assistingParticipantIds"`
+	AssistingParticipantIDs []int    `json:"assistingParticipantIds"`
 	BuildingType            string   `json:"buildingType"`
-	CreatorId               int      `json:"creatorId"`
+	CreatorID               int      `json:"creatorId"`
 	EventType               string   `json:"eventType"`
 	ItemAfter               int      `json:"itemAfter"`
 	ItemBefore              int      `json:"itemBefore"`
-	ItemId                  int      `json:"itemId"`
-	KillerId                int      `json:"killerId"`
+	ItemID                  int      `json:"itemId"`
+	KillerID                int      `json:"killerId"`
 	LaneType                string   `json:"laneType"`
 	LevelUpType             string   `json:"levelUpType"`
 	MonsterType             string   `json:"monsterType"`
-	ParticipantId           int      `json:"participantId"`
+	ParticipantID           int      `json:"participantId"`
 	PointCaptured           string   `json:"pointCaptured"`
 	Position                Position `json:"position"`
 	SkillSlot               int      `json:"skillSlot"`
-	TeamId                  int      `json:"teamId"`
+	TeamID                  int      `json:"teamId"`
 	Timestamp               int64    `json:"timestamp"`
 	TowerType               string   `json:"towerType"`
-	VictimId                int      `json:"victimId"`
+	VictimID                int      `json:"victimId"`
 	WardType                string   `json:"wardType"`
 }
 
+// Position is the X and Y coords on the map
 type Position struct {
 	X int `json:"x"`
 	Y int `json:"y"`
 }
 
+// ParticipantFrame is the information for a participant in a frame
 type ParticipantFrame struct {
 	CurrentGold         int      `json:"currentGold"`
 	DominionScore       int      `json:"dominionScore"`
 	JungleMinionsKilled int      `json:"jungleMinionsKilled"`
 	Level               int      `json:"level"`
 	MinionsKilled       int      `json:"minionsKilled"`
-	ParticipantId       int      `json:"participantId"`
+	ParticipantID       int      `json:"participantId"`
 	Position            Position `json:"position"`
 	TeamScore           int      `json:"teamScore"`
 	TotalGold           int      `json:"totalGold"`
 	Xp                  int      `json:"xp"`
 }
 
+// GetMatchParams are the optional query params for Get
 type GetMatchParams struct {
 	IncludeTimeline bool `url:"includeTimeline,omitempty"`
 }
 
 const matchPathPart = "api/lol/%s/v2.2/match"
 
-func (s *MatchService) Get(ctx context.Context, matchId int64, params *GetMatchParams) (*MatchDetail, error) {
+// Get gets the match for a given matchID
+func (s *MatchService) Get(ctx context.Context, matchID int64, params *GetMatchParams) (*MatchDetail, error) {
 	match := new(MatchDetail)
 	err := s.client.getResource(
 		ctx,
 		addRegionToString(matchPathPart, s.client.region),
-		strconv.FormatInt(matchId, 10),
+		strconv.FormatInt(matchID, 10),
 		params,
-		match)
+		match,
+	)
 	return match, err
 }

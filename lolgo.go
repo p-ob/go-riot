@@ -13,48 +13,80 @@ import (
 )
 
 // lolgo metadata
+
+// Name is the name of this package
 const Name = "lolgo"
+
+// Version is the version of this package
 const Version = 0.1
 
-type BaseParams struct {
-	ApiKey string `url:"api_key,omitempty"`
+// baseParams are required by (almost) all queries
+type baseParams struct {
+	APIKey string `url:"api_key,omitempty"`
 }
 
-type RiotApiError struct {
-	Status          RiotApiErrorStatus `json:"status"`
+// RiotAPIError is the error structure returned by Riot (along with the headers returned for a 429 response)
+type RiotAPIError struct {
+	Status          riotAPIErrorStatus `json:"status"`
 	XRateLimitType  string             `json:"-"`
 	RetryAfter      int                `json:"-"`
 	XRateLimitCount int                `json:"-"`
 }
 
-type RiotApiErrorStatus struct {
+// riotAPIErrorStatus is the container with status information
+type riotAPIErrorStatus struct {
 	StatusCode int    `json:"status_code"`
 	Message    string `json:"message"`
 }
 
+// Region is an "enum" convenience structure
 type Region int
 
 const (
-	Na   Region = 0
-	Euw  Region = 1
+	// Na is North America
+	Na Region = 0
+
+	// Euw is Europe West
+	Euw Region = 1
+
+	// Eune is Europe Nordic East
 	Eune Region = 2
-	Kr   Region = 3
-	Lan  Region = 4
-	Las  Region = 5
-	Jp   Region = 6
-	Ru   Region = 7
-	Tr   Region = 8
-	Oce  Region = 9
-	Br   Region = 10
-	Pbe  Region = 11
+
+	// Kr is Korea
+	Kr Region = 3
+
+	// Lan is Latin America North
+	Lan Region = 4
+
+	// Las is Latin America South
+	Las Region = 5
+
+	// Jp is Japan
+	Jp Region = 6
+
+	// Ru is Russia
+	Ru Region = 7
+
+	// Tr is Turkey
+	Tr Region = 8
+
+	// Oce is Oceania
+	Oce Region = 9
+
+	// Br is Brazil
+	Br Region = 10
+
+	// Pbe is Public Beta Environment
+	Pbe Region = 11
 )
 
-// The base URL serving the API. Override this for testing.
+// BaseURL is the base url serving the API. Override this for testing.
 var BaseURL = "https://%s.api.pvp.net"
 
+// Client is the the API client hook to query Riot's League of Legends API
 type Client struct {
 	sling  *sling.Sling
-	ApiKey string
+	APIKey string
 	region Region
 
 	// The API Client uses these resources
@@ -74,7 +106,7 @@ type Client struct {
 
 const defaultTimeout = 30*time.Second + 500*time.Millisecond
 
-// Constructs a client to handle API calls to the Riot League of Legends public API
+// NewClient constructs a client to handle API calls to the Riot League of Legends public API
 // apiKey: unique key given by registering with https://developer.riotgames.com/
 // region: the region to make queries against (Na, Euw, etc.)
 // httpClient: if desired, provide your own instance of an httpClient; pass nil otherwise
@@ -94,9 +126,11 @@ func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 			Version,
 			runtime.Version(),
 			runtime.GOOS,
-			runtime.GOARCH))
+			runtime.GOARCH,
+		),
+	)
 
-	c := &Client{sling: slingClient, ApiKey: apiKey, region: region}
+	c := &Client{sling: slingClient, APIKey: apiKey, region: region}
 	c.Summoner = &SummonerService{client: c}
 	c.Match = &MatchService{client: c}
 	c.MatchList = &MatchListService{client: c}
@@ -113,7 +147,7 @@ func NewClient(apiKey string, region Region, httpClient *http.Client) *Client {
 	return c
 }
 
-// returns the region set for this Client
+// Region returns the region set for this Client
 func (c Client) Region() Region {
 	return c.region
 }
@@ -123,9 +157,9 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 	if sid != "" {
 		sidPart = strings.Join([]string{pathPart, sid}, "/")
 	}
-	riotError := new(RiotApiError)
-	baseParams := new(BaseParams)
-	baseParams.ApiKey = c.ApiKey
+	riotError := new(RiotAPIError)
+	baseParams := new(baseParams)
+	baseParams.APIKey = c.APIKey
 	req, err := c.sling.New().Get(sidPart).QueryStruct(params).QueryStruct(baseParams).Request()
 	if err != nil {
 		return err
@@ -156,7 +190,8 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 	return nil
 }
 
-func (e *RiotApiError) Error() string {
+// Error formats a RiotAPIError
+func (e *RiotAPIError) Error() string {
 	return fmt.Sprintf("lolgo: %+v", *e)
 }
 

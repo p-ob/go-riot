@@ -4,10 +4,12 @@ import (
 	"context"
 )
 
+// StatusService is the endpoint to use to get server related information
 type StatusService struct {
 	client *Client
 }
 
+// Shard is the container per server
 type Shard struct {
 	Hostname  string   `json:"hostname"`
 	Locales   []string `json:"locales"`
@@ -18,6 +20,7 @@ type Shard struct {
 
 const statusPathPart = "shards"
 
+// Get gets the shard for a given region
 func (s *StatusService) Get(ctx context.Context, region Region) (*Shard, error) {
 	shard := new(Shard)
 
@@ -26,10 +29,12 @@ func (s *StatusService) Get(ctx context.Context, region Region) (*Shard, error) 
 		statusPathPart,
 		mapRegionToString(region),
 		nil,
-		shard)
+		shard,
+	)
 	return shard, err
 }
 
+// GetAll gets all shards
 func (s *StatusService) GetAll(ctx context.Context) (*[]Shard, error) {
 	shards := new([]Shard)
 
@@ -38,6 +43,7 @@ func (s *StatusService) GetAll(ctx context.Context) (*[]Shard, error) {
 		statusPathPart,
 		"",
 		nil,
-		shards)
+		shards,
+	)
 	return shards, err
 }

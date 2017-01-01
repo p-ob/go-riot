@@ -5,47 +5,55 @@ import (
 	"strconv"
 )
 
+// ChampionService is the endpoint to use to get quick information about champions
 type ChampionService struct {
 	client *Client
 }
 
+// ChampionListDto is the container returned by GetAll
 type ChampionListDto struct {
 	Champions []ChampionDto `json:"champions"`
 }
 
+// ChampionDto is the container returned per champion
 type ChampionDto struct {
 	Active            bool  `json:"active"`
 	BotEnabled        bool  `json:"botEnabled"`
 	BotMmEnabled      bool  `json:"botMmEnabled"`
 	FreeToPlay        bool  `json:"freeToPlay"`
-	Id                int64 `json:"id"`
+	ID                int64 `json:"id"`
 	RankedPlayEnabled bool  `json:"rankedPlayEnabled"`
 }
 
+// GetChampionsParams are optional query params
 type GetChampionsParams struct {
 	FreeToPlay bool `url:"freeToPlay,omitempty"`
 }
 
 const championPathPart = "api/lol/%s/v1.2/champion"
 
-func (s *ChampionService) Get(ctx context.Context, championId int64) (*MatchList, error) {
-	matchList := new(MatchList)
+// Get gets a single champion, by championId
+func (s *ChampionService) Get(ctx context.Context, championID int64) (*ChampionDto, error) {
+	champion := new(ChampionDto)
 	err := s.client.getResource(
 		ctx,
 		addRegionToString(championPathPart, s.client.region),
-		strconv.FormatInt(championId, 10),
+		strconv.FormatInt(championID, 10),
 		nil,
-		matchList)
-	return matchList, err
+		champion,
+	)
+	return champion, err
 }
 
-func (s *ChampionService) GetAll(ctx context.Context, params GetChampionsParams) (*MatchList, error) {
-	matchList := new(MatchList)
+// GetAll gets all champions, or pass in params to filter down
+func (s *ChampionService) GetAll(ctx context.Context, params GetChampionsParams) (*ChampionListDto, error) {
+	champions := new(ChampionListDto)
 	err := s.client.getResource(
 		ctx,
 		addRegionToString(championPathPart, s.client.region),
 		"",
 		params,
-		matchList)
-	return matchList, err
+		champions,
+	)
+	return champions, err
 }
