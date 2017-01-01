@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -17,10 +18,9 @@ func TestGetSummoner(t *testing.T) {
 	BaseURL = "http://example.com"
 	region := Na
 	summoner := generateSummoner()
-	summonerId := summoner.Id
-	getSummonerPathPart := fmt.Sprintf("/%s/%v", addRegionToString(summonerPathPart, region), summonerId)
+	getSummonerPathPart := fmt.Sprintf("/%s/%v", addRegionToString(summonerPathPart, region), summoner.Id)
 	getSummonerResponse := make(map[int64]SummonerDto)
-	getSummonerResponse[summonerId] = summoner
+	getSummonerResponse[summoner.Id] = summoner
 
 	summonerJsonByteArray, _ := json.Marshal(getSummonerResponse)
 
@@ -34,13 +34,13 @@ func TestGetSummoner(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	retrievedSummonerMap, err := client.Summoner.Get(ctx, summonerId)
-	retrievedSummoner := (*retrievedSummonerMap)[summonerId]
+	retrievedSummonerMap, err := client.Summoner.Get(ctx, summoner.Id)
+	retrievedSummoner := (*retrievedSummonerMap)[summoner.Id]
 	if err != nil {
 		t.Errorf("expected nil, got %v", err)
 	}
-	if retrievedSummoner.Id != summonerId {
-		t.Errorf("expected %v, got %v", summonerId, retrievedSummoner.Id)
+	if !reflect.DeepEqual(summoner, retrievedSummoner) {
+		t.Errorf("expected %v, got %v", summoner, retrievedSummoner)
 	}
 }
 
