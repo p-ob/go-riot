@@ -226,7 +226,7 @@ type BasicDataStatsDto struct {
 	FlatCritChanceMod                   float64 `json:"FlatCritChanceMod"`
 	FlatCritDamageMod                   float64 `json:"FlatCritDamageMod"`
 	FlatExpBonus                        float64 `json:"FlatEXPBonus"`
-	FlatEnerygyPoolMod                  float64 `json:"FlatEnerygyPoolMod"`
+	FlatEnergyPoolMod                   float64 `json:"FlatEnergyPoolMod"`
 	FlatEnergyRegenMod                  float64 `json:"FlatEnergyRegenMod"`
 	FlatHpPoolMod                       float64 `json:"FlatHPPoolMod"`
 	FlatHpRegenMod                      float64 `json:"FlatHPRegenMod"`
@@ -402,7 +402,7 @@ type SummonerSpellDto struct {
 	Image                ImageDto       `json:"image"`
 	Key                  string         `json:"key"`
 	LevelTip             LevelTipDto    `json:"levelTip"`
-	Maxrank              int            `json:"maxrank"`
+	MaxRank              int            `json:"maxrank"`
 	Modes                []string       `json:"modes"`
 	Name                 string         `json:"name"`
 	Range                interface{}    `json:"range"`

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/dghubble/sling"
 	"net/http"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -49,7 +50,7 @@ const (
 )
 
 // The base URL serving the API. Override this for testing.
-var BaseURL = "https://%s.api.pvp.net/"
+var BaseURL = "https://%s.api.pvp.net"
 
 type Client struct {
 	sling  *sling.Sling
@@ -138,12 +139,12 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 	// handle special headers supplied when Riot returns a 429 response
 	if resp.StatusCode == http.StatusTooManyRequests {
 		riotError.XRateLimitType = resp.Header.Get("X-Rate-Limit-Type")
-		retryAfter, e := strconv.ParseInt(resp.Header.Get("Retry-After"), 10, 32)
-		if e == nil {
+		retryAfter, err := strconv.ParseInt(resp.Header.Get("Retry-After"), 10, 32)
+		if err == nil {
 			riotError.RetryAfter = int(retryAfter)
 		}
-		xRateLimitCount, e := strconv.ParseInt(resp.Header.Get("X-Rate-Limit-Count"), 10, 32)
-		if e == nil {
+		xRateLimitCount, err := strconv.ParseInt(resp.Header.Get("X-Rate-Limit-Count"), 10, 32)
+		if err == nil {
 			riotError.XRateLimitCount = int(xRateLimitCount)
 		}
 	}
@@ -156,12 +157,17 @@ func (c *Client) getResource(ctx context.Context, pathPart string, sid string, p
 }
 
 func (e *RiotApiError) Error() string {
-	return fmt.Sprintf("%+v", *e)
+	return fmt.Sprintf("lolgo: %+v", *e)
 }
 
 // private helper methods
 
 func addRegionToString(str string, region Region) string {
+	r := "(%#?[a-zA-Z])"
+	isMatch, err := regexp.MatchString(r, str)
+	if !isMatch || err != nil {
+		return str
+	}
 	stringRegion := mapRegionToString(region)
 	return fmt.Sprintf(str, stringRegion)
 }
