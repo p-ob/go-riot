@@ -15,7 +15,7 @@ type LeagueService struct {
 type LeagueDto struct {
 	Entries       []LeagueEntryDto `json:"entries"`
 	Name          string           `json:"name"`
-	ParticipantID string           `json:"participantId"`
+	ParticipantID int64            `json:"participantId"`
 	Queue         string           `json:"queue"`
 	Tier          string           `json:"tier"`
 }
@@ -30,7 +30,7 @@ type LeagueEntryDto struct {
 	LeaguePoints     int           `json:"leaguePoints"`
 	Losses           int           `json:"losses"`
 	MiniSeries       MiniSeriesDto `json:"miniSeries"`
-	PlayerOrTeamID   string        `json:"playerOrTeamId"`
+	PlayerOrTeamID   int64         `json:"playerOrTeamId"`
 	PlayerOrTeamName string        `json:"playerOrTeamName"`
 	PlayStyle        string        `json:"playstyle"`
 	Wins             int           `json:"wins"`
@@ -48,11 +48,11 @@ const leaguePathPart = "api/lol/%s/v2.5/league"
 
 // GetBySummoner gets the league data for given summonerIDs (up to 10)
 // see https://developer.riotgames.com/api/methods#!/1215/4701 for distinction from GetEntriesBySummoner
-func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIDs ...int64) (*map[string]LeagueDto, error) {
+func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIDs ...int64) (*map[int64]LeagueDto, error) {
 	if len(summonerIDs) > 10 {
 		return nil, errors.New("Cannot pass more than 10 summoners to retrieve")
 	}
-	leagues := new(map[string]LeagueDto)
+	leagues := new(map[int64]LeagueDto)
 	err := s.client.getResource(
 		ctx,
 		addRegionToString(leaguePathPart, s.client.region)+"/by-summoner",
@@ -65,11 +65,11 @@ func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIDs ...int64)
 
 // GetEntriesBySummoner gets the league data for given summonerIDs (up to 10)
 // see https://developer.riotgames.com/api/methods#!/1215/4705 for distinction from GetBySummoner
-func (s *LeagueService) GetEntriesBySummoner(ctx context.Context, summonerIDs ...int64) (*map[string]LeagueDto, error) {
+func (s *LeagueService) GetEntriesBySummoner(ctx context.Context, summonerIDs ...int64) (*map[int64]LeagueDto, error) {
 	if len(summonerIDs) > 10 {
 		return nil, errors.New("Cannot pass more than 10 summoners to retrieve")
 	}
-	leagues := new(map[string]LeagueDto)
+	leagues := new(map[int64]LeagueDto)
 	err := s.client.getResource(
 		ctx,
 		fmt.Sprintf(
