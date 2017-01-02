@@ -33,7 +33,7 @@ Resources mapped:
 - [Game v1.3](https://developer.riotgames.com/api/methods#!/1207)
 - [League v2.5](https://developer.riotgames.com/api/methods#!/1215)
 - [Match v2.2](https://developer.riotgames.com/api/methods#!/1224)
-- [Matchlist v2.2](https://developer.riotgames.com/api/methods#!/1223)
+- [MatchList v2.2](https://developer.riotgames.com/api/methods#!/1223)
 - [StaticData v1.2](https://developer.riotgames.com/api/methods#!/1055)
 - [Stats v1.3](https://developer.riotgames.com/api/methods#!/1209)
 - [Status v1.0](https://developer.riotgames.com/api/methods#!/1085)

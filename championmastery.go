@@ -14,13 +14,13 @@ type ChampionMasteryService struct {
 // ChampionMasteryDto is the container returned per champion mastery
 type ChampionMasteryDto struct {
 	ChampionPoints               int   `json:"championPoints"`
-	PlayerID                     int   `json:"playerId"`
-	ChampionPointsUntilNextLevel int   `json:"championPointsUntilNextLevel"`
+	PlayerID                     int64 `json:"playerId"`
+	ChampionPointsUntilNextLevel int64 `json:"championPointsUntilNextLevel"`
 	ChestGranted                 bool  `json:"chestGranted"`
 	ChampionLevel                int   `json:"championLevel"`
 	TokensEarned                 int   `json:"tokensEarned"`
-	ChampionID                   int   `json:"championId"`
-	ChampionPointsSinceLastLevel int   `json:"championPointsSinceLastLevel"`
+	ChampionID                   int64 `json:"championId"`
+	ChampionPointsSinceLastLevel int64 `json:"championPointsSinceLastLevel"`
 	LastPlayTime                 int64 `json:"lastPlayTime"`
 }
 

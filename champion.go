@@ -46,7 +46,7 @@ func (s *ChampionService) Get(ctx context.Context, championID int64) (*ChampionD
 }
 
 // GetAll gets all champions, or pass in params to filter down
-func (s *ChampionService) GetAll(ctx context.Context, params GetChampionsParams) (*ChampionListDto, error) {
+func (s *ChampionService) GetAll(ctx context.Context, params *GetChampionsParams) (*ChampionListDto, error) {
 	champions := new(ChampionListDto)
 	err := s.client.getResource(
 		ctx,
