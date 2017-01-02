@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -20,7 +21,7 @@ func TestSummonerService_Get(t *testing.T) {
 	getSummonerResponse := make(map[int64]SummonerDto)
 	getSummonerResponse[summoner.ID] = summoner
 
-	summonerJSONByteArray, _ := json.Marshal(getSummonerResponse)
+	jsonByteArray, _ := json.Marshal(getSummonerResponse)
 
 	_, mux, server, client := mockClient(region)
 	defer server.Close()
@@ -28,7 +29,7 @@ func TestSummonerService_Get(t *testing.T) {
 	mux.HandleFunc(getSummonerPathPart, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(summonerJSONByteArray)
+		w.Write(jsonByteArray)
 	})
 
 	ctx := context.Background()
@@ -55,7 +56,7 @@ func TestSummonerService_GetByName(t *testing.T) {
 	getSummonerResponse := make(map[string]SummonerDto)
 	getSummonerResponse[summoner.Name] = summoner
 
-	summonerJSONByteArray, _ := json.Marshal(getSummonerResponse)
+	jsonByteArray, _ := json.Marshal(getSummonerResponse)
 
 	_, mux, server, client := mockClient(region)
 	defer server.Close()
@@ -63,7 +64,7 @@ func TestSummonerService_GetByName(t *testing.T) {
 	mux.HandleFunc(getSummonerPathPart, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(summonerJSONByteArray)
+		w.Write(jsonByteArray)
 	})
 
 	ctx := context.Background()
@@ -182,24 +183,20 @@ func TestSummonerService_Get_MoreThan40(t *testing.T) {
 	region := Na
 	const nSummoners = 41
 	getSummonerResponse := make(map[int64]SummonerDto, nSummoners)
-	summoners := make([]SummonerDto, nSummoners)
+	summonerIDs := make([]int64, nSummoners)
 	for i := 0; i < nSummoners; i++ {
 		s := generateSummoner()
-		summoners[i] = s
+		summonerIDs[i] = s.ID
 		getSummonerResponse[s.ID] = s
 	}
 
-	summonerIDs := make([]int64, nSummoners)
-	for i, s := range summoners {
-		summonerIDs[i] = s.ID
-	}
 	getSummonerPathPart := fmt.Sprintf(
 		"/%s/%v",
 		addRegionToString(summonerPathPart, region),
 		int64ArrayToCommaDelimitedList(summonerIDs),
 	)
 
-	summonerJSONByteArray, _ := json.Marshal(getSummonerResponse)
+	jsonByteArray, _ := json.Marshal(getSummonerResponse)
 
 	_, mux, server, client := mockClient(region)
 	defer server.Close()
@@ -207,7 +204,7 @@ func TestSummonerService_Get_MoreThan40(t *testing.T) {
 	mux.HandleFunc(getSummonerPathPart, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(summonerJSONByteArray)
+		w.Write(jsonByteArray)
 	})
 
 	ctx := context.Background()
@@ -217,6 +214,158 @@ func TestSummonerService_Get_MoreThan40(t *testing.T) {
 	}
 	if retrievedSummonerMap != nil {
 		t.Errorf("expected nil, got %+v", retrievedSummonerMap)
+	}
+}
+
+func TestSummonerService_GetByName_MoreThan40(t *testing.T) {
+	// set up data
+	BaseURL = "http://example.com"
+	region := Na
+	const nSummoners = 41
+	summonerNames := make([]string, nSummoners)
+	getSummonerResponse := make(map[string]SummonerDto, nSummoners)
+	for i := 0; i < nSummoners; i++ {
+		s := generateSummoner()
+		summonerNames[i] = s.Name
+		getSummonerResponse[s.Name] = s
+	}
+
+	getSummonerPathPart := fmt.Sprintf(
+		"/%s/by-name/%s",
+		addRegionToString(summonerPathPart, region),
+		strings.Join(summonerNames, ","),
+	)
+	jsonByteArray, _ := json.Marshal(getSummonerResponse)
+
+	_, mux, server, client := mockClient(region)
+	defer server.Close()
+
+	mux.HandleFunc(getSummonerPathPart, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonByteArray)
+	})
+
+	ctx := context.Background()
+	retrievedSummonerMap, err := client.Summoner.GetByName(ctx, summonerNames...)
+	if err == nil {
+		t.Errorf("expected error, got %+v", err)
+	}
+	if retrievedSummonerMap != nil {
+		t.Errorf("expected nil, got %+v", retrievedSummonerMap)
+	}
+}
+
+func TestSummonerService_GetName_MoreThan40(t *testing.T) {
+	// set up data
+	BaseURL = "http://example.com"
+	region := Na
+	const nSummoners = 41
+	summonerIDs := make([]int64, nSummoners)
+	getNameResponse := make(map[int64]string, nSummoners)
+	for i := 0; i < nSummoners; i++ {
+		s := generateSummoner()
+		summonerIDs[i] = s.ID
+		getNameResponse[s.ID] = s.Name
+	}
+
+	getNamePathPart := fmt.Sprintf(
+		"/%s/%v/name",
+		addRegionToString(summonerPathPart, region),
+		int64ArrayToCommaDelimitedList(summonerIDs),
+	)
+
+	jsonByteArray, _ := json.Marshal(getNameResponse)
+	_, mux, server, client := mockClient(region)
+	defer server.Close()
+
+	mux.HandleFunc(getNamePathPart, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonByteArray)
+	})
+
+	ctx := context.Background()
+	retrievedNamesMap, err := client.Summoner.GetNames(ctx, summonerIDs...)
+	if err == nil {
+		t.Errorf("expected error, got %+v", err)
+	}
+	if retrievedNamesMap != nil {
+		t.Errorf("expected nil, got %+v", retrievedNamesMap)
+	}
+}
+
+func TestSummonerService_GetMasteries_MoreThan40(t *testing.T) {
+	// set up data
+	BaseURL = "http://example.com"
+	region := Na
+	const nSummoners = 41
+	summonerIDs := make([]int64, nSummoners)
+	getMasteriesResponse := make(map[int64]MasteryPagesDto, nSummoners)
+	for i := 0; i < nSummoners; i++ {
+		m := generateMasteryPagesDto()
+		summonerIDs[i] = m.SummonerID
+		getMasteriesResponse[m.SummonerID] = m
+	}
+	getMasteriesPathPart := fmt.Sprintf(
+		"/%s/%v/masteries",
+		addRegionToString(summonerPathPart, region),
+		int64ArrayToCommaDelimitedList(summonerIDs),
+	)
+	jsonByteArray, _ := json.Marshal(getMasteriesResponse)
+	_, mux, server, client := mockClient(region)
+	defer server.Close()
+
+	mux.HandleFunc(getMasteriesPathPart, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonByteArray)
+	})
+
+	ctx := context.Background()
+	retrievedMasteryPagesMap, err := client.Summoner.GetMasteries(ctx, summonerIDs...)
+	if err == nil {
+		t.Errorf("expected error, got %+v", err)
+	}
+	if retrievedMasteryPagesMap != nil {
+		t.Errorf("expected nil, got %+v", retrievedMasteryPagesMap)
+	}
+}
+
+func TestSummonerService_GetRunes_MoreThan40(t *testing.T) {
+	// set up data
+	BaseURL = "http://example.com"
+	region := Na
+	const nSummoners = 41
+	summonerIDs := make([]int64, nSummoners)
+	getRunesResponse := make(map[int64]RunePagesDto, nSummoners)
+	for i := 0; i < nSummoners; i++ {
+		r := generateRunePagesDto()
+		summonerIDs[i] = r.SummonerID
+		getRunesResponse[r.SummonerID] = r
+	}
+	getRunesPathPart := fmt.Sprintf(
+		"/%s/%v/runes",
+		addRegionToString(summonerPathPart, region),
+		int64ArrayToCommaDelimitedList(summonerIDs),
+	)
+	jsonByteArray, _ := json.Marshal(getRunesResponse)
+	_, mux, server, client := mockClient(region)
+	defer server.Close()
+
+	mux.HandleFunc(getRunesPathPart, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonByteArray)
+	})
+
+	ctx := context.Background()
+	retrievedRunePagesMap, err := client.Summoner.GetRunes(ctx, summonerIDs...)
+	if err == nil {
+		t.Errorf("expected error, got %+v", err)
+	}
+	if retrievedRunePagesMap != nil {
+		t.Errorf("expected nil, got %+v", retrievedRunePagesMap)
 	}
 }
 
@@ -302,6 +451,6 @@ func generateRuneDto() RuneDto {
 	r1 := rand.New(s1)
 	return RuneDto{
 		RuneID:     r1.Int(),
-		RuneSlotID: r1.Intn(30),
+		RuneSlotID: r1.Intn(3),
 	}
 }

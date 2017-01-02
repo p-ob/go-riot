@@ -59,7 +59,7 @@ type Participant struct {
 // Mastery is the container for basic mastery utilization information
 type Mastery struct {
 	MasteryID int64 `json:"masteryId"`
-	Rank      int64 `json:"rank"`
+	Rank      int   `json:"rank"`
 }
 
 // Rune is the cotainer for basic rune utilization information
