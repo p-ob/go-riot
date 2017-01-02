@@ -8,7 +8,7 @@ before_script:
 
 install:
     - go get github.com/golang/lint/golint
-    - go get -v -t .
+    - go get -v -t ./lol
 
 script:
     - ./test
