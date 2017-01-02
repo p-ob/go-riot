@@ -2,15 +2,15 @@
 
 lolgo is a [League of Legends API](https://developer.riotgames.com/) client for Go. 
 
-
 ## Install
 
     go get github.com/p-ob/lolgo/lol
     
 ## Example usage:  
+
 ```golang  
-// Initiate a lolgo.Client with your API key, and the region to query against     
-client := lolgo.NewClient(apiKey, lolgo.Na, httpClient)  
+// Initiate a lol.Client with your API key, and the region to query against     
+client := lol.NewClient(apiKey, lol.Na, httpClient)  
 ctx := context.Background()  
 
 // Drunk7Irishman's summoner id
@@ -28,7 +28,8 @@ fmt.Printf("Summoner:\n%+v\n", thisSummoner)
 //    {ID:25886496 Name:Drunk7Irishman ProfileIconID:744 SummonerLevel:30 RevisionDate:1482381110000}
 ```
 
-Resources mapped:  
+## Resources mapped:  
+
 - [Champion v1.2](https://developer.riotgames.com/api/methods#!/1206)
 - [ChampionMastery v1.0](https://developer.riotgames.com/api/methods#!/1091)
 - [CurrentGame v1.0](https://developer.riotgames.com/api/methods#!/976)
