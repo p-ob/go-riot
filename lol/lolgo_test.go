@@ -1,4 +1,4 @@
-package lolgo
+package lol
 
 import (
 	"math/rand"

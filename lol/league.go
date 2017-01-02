@@ -1,4 +1,4 @@
-package lolgo
+package lol
 
 import (
 	"context"
@@ -46,8 +46,7 @@ type MiniSeriesDto struct {
 
 const leaguePathPart = "api/lol/%s/v2.5/league"
 
-// GetBySummoner gets the league data for given summonerIDs (up to 10)
-// see https://developer.riotgames.com/api/methods#!/1215/4701 for distinction from GetEntriesBySummoner
+// GetBySummoner gets the league data for given summonerIDs (up to 10), and others in the same league
 func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIDs ...int64) (*map[int64]LeagueDto, error) {
 	if len(summonerIDs) > 10 {
 		return nil, errors.New("Cannot pass more than 10 summoners to retrieve")
@@ -63,8 +62,7 @@ func (s *LeagueService) GetBySummoner(ctx context.Context, summonerIDs ...int64)
 	return leagues, err
 }
 
-// GetEntriesBySummoner gets the league data for given summonerIDs (up to 10)
-// see https://developer.riotgames.com/api/methods#!/1215/4705 for distinction from GetBySummoner
+// GetEntriesBySummoner gets the league data for given summonerIDs (up to 10), and only those summonerIDs
 func (s *LeagueService) GetEntriesBySummoner(ctx context.Context, summonerIDs ...int64) (*map[int64]LeagueDto, error) {
 	if len(summonerIDs) > 10 {
 		return nil, errors.New("Cannot pass more than 10 summoners to retrieve")

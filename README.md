@@ -1,10 +1,13 @@
-# lolgo
+# lolgo [![Build Status](https://travis-ci.org/p-ob/lolgo.svg?branch=master)](https://travis-ci.org/p-ob/lolgo)
 
 lolgo is a [League of Legends API](https://developer.riotgames.com/) client for Go. 
 
-[![Build Status](https://travis-ci.org/p-ob/lolgo.svg?branch=master)](https://travis-ci.org/p-ob/lolgo)
 
-Example usage:  
+## Install
+
+    go get github.com/p-ob/lolgo/lol
+    
+## Example usage:  
 ```golang  
 // Initiate a lolgo.Client with your API key, and the region to query against     
 client := lolgo.NewClient(apiKey, lolgo.Na, httpClient)  

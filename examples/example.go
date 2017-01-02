@@ -4,14 +4,14 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"github.com/p-ob/lolgo"
+	"github.com/p-ob/lolgo/lol"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-const region = lolgo.Na
+const region = lol.Na
 
 func main() {
 	apiKey, err := getAPIKey()
@@ -19,7 +19,7 @@ func main() {
 		printError(err)
 		return
 	}
-	client := lolgo.NewClient(apiKey, region, nil)
+	client := lol.NewClient(apiKey, region, nil)
 	ctx := context.Background()
 
 	reader := bufio.NewReader(os.Stdin)
