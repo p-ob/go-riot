@@ -1,10 +1,10 @@
-# lolgo [![Build Status](https://travis-ci.org/p-ob/lolgo.svg?branch=master)](https://travis-ci.org/p-ob/lolgo)
+# go-riot [![Build Status](https://travis-ci.org/p-ob/go-riot.svg?branch=master)](https://travis-ci.org/p-ob/go-riot)
 
-lolgo is a [League of Legends API](https://developer.riotgames.com/) client for Go. 
+go-riot is a [Riot Games API](https://developer.riotgames.com/) client for Go.
 
 ## Install
 
-    go get github.com/p-ob/lolgo/lol
+    go get github.com/p-ob/go-riot/lol
     
 ## Example usage:  
 

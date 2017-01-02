@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"github.com/p-ob/lolgo/lol"
+	"github.com/p-ob/go-riot/lol"
 	"io/ioutil"
 	"os"
 	"path/filepath"

@@ -12,10 +12,10 @@ import (
 	"time"
 )
 
-// lolgo metadata
+// go-riot metadata
 
 // Name is the name of this package
-const Name = "lolgo"
+const Name = "go-riot/lol"
 
 // Version is the version of this package
 const Version = 0.1
