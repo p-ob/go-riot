@@ -1,11 +1,13 @@
-# go-riot [![Build Status](https://travis-ci.org/p-ob/go-riot.svg?branch=master)](https://travis-ci.org/p-ob/go-riot)
+# go-riot [![Build Status](https://travis-ci.org/p-ob/go-riot.svg?branch=master)](https://travis-ci.org/p-ob/go-riot) [![GoDoc](https://godoc.org/github.com/p-ob/go-riot/lol?status.png)](https://godoc.org/github.com/p-ob/go-riot/lol)
 
 go-riot is a [Riot Games API](https://developer.riotgames.com/) client for Go.
+
 
 ## Install
 
     go get github.com/p-ob/go-riot/lol
     
+
 ## Example usage:  
 
 ```golang  
@@ -28,6 +30,7 @@ fmt.Printf("Summoner:\n%+v\n", thisSummoner)
 //    {ID:25886496 Name:Drunk7Irishman ProfileIconID:744 SummonerLevel:30 RevisionDate:1482381110000}
 ```
 
+
 ## Resources mapped:  
 
 - [Champion v1.2](https://developer.riotgames.com/api/methods#!/1206)
@@ -43,3 +46,9 @@ fmt.Printf("Summoner:\n%+v\n", thisSummoner)
 - [Status v1.0](https://developer.riotgames.com/api/methods#!/1085)
 - [Summoner v1.4](https://developer.riotgames.com/api/methods#!/1208)
 
+
+## Disclaimer
+
+go-riot isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially
+involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered
+trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
