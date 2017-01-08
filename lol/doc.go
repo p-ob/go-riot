@@ -1,5 +1,5 @@
 /*
-Package go-riot/lol is a Go client that wraps the Riot Games public API.
+Package lol is a Go client that wraps the Riot Games public API.
 
 All Riot defined objects have been mapped to their Go equivalent, with equivalent property types (e.g. long -> int64).
 The only exceptions are properties that were stored as strings, but are safe to parse to int64; LeagueDto.ParticipantID
