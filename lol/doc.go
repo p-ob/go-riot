@@ -33,5 +33,5 @@ Optional Params
 
 For any method that allows query params, there is an associated Params object. For valid values to use with these query
 params and further documentation, please see the API docs at https://developer.riotgames.com/api/methods.
- */
+*/
 package lol
