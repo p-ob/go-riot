@@ -188,7 +188,7 @@ type Team struct {
 	InhibitorKills       int              `json:"inhibitorKills"`
 	RiftHeraldKills      int              `json:"riftHeraldKills"`
 	TeamID               int              `json:"teamId"`
-	TowerKills           int              `json:"TowerKills"`
+	TowerKills           int              `json:"towerKills"`
 	VilemawKills         int              `json:"vilemawKills"`
 	Winner               bool             `json:"winner"`
 }
