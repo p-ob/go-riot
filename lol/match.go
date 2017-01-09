@@ -264,7 +264,8 @@ type GetMatchParams struct {
 	IncludeTimeline bool `url:"includeTimeline,omitempty"`
 }
 
-type GetTournamentParams struct {
+// GetForTournamentParams are used when getting a match related to a tournament
+type GetForTournamentParams struct {
 	IncludeTimeline bool   `url:"includeTimeline,omitempty"`
 	TournamentCode  string `url:"tournamentCode,omitempty"`
 }
@@ -285,7 +286,7 @@ func (s *MatchService) Get(ctx context.Context, matchID int64, params *GetMatchP
 }
 
 // GetForTournament gets the match details for a tournament match, params.TournamentCode is required
-func (s *MatchService) GetForTournament(ctx context.Context, matchID int64, params *GetTournamentParams) (*MatchDetail, error) {
+func (s *MatchService) GetForTournament(ctx context.Context, matchID int64, params *GetForTournamentParams) (*MatchDetail, error) {
 	if params == nil || (*params).TournamentCode == "" {
 		return nil, errors.New("Must include query params for TournamentCode")
 	}
