@@ -2,8 +2,8 @@
 Package lol is a Go client that wraps the Riot Games public API.
 
 All Riot defined objects have been mapped to their Go equivalent, with equivalent property types (e.g. long -> int64).
-The only exceptions are properties that were stored as strings, but are safe to parse to int64; LeagueDto.ParticipantID
-is an example of this.
+The only exceptions are properties that were stored as strings for legacy reasons, but are now safe to parse to int64;
+LeagueDto.ParticipantID is an example of this.
 
 Usage
 
@@ -33,5 +33,11 @@ Optional Params
 
 For any method that allows query params, there is an associated Params object. For valid values to use with these query
 params and further documentation, please see the API docs at https://developer.riotgames.com/api/methods.
+
+Disclaimer
+
+go-riot/lol isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially
+involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered
+trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
 */
 package lol

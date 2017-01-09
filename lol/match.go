@@ -2,6 +2,8 @@ package lol
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -262,6 +264,11 @@ type GetMatchParams struct {
 	IncludeTimeline bool `url:"includeTimeline,omitempty"`
 }
 
+type GetTournamentParams struct {
+	IncludeTimeline bool   `url:"includeTimeline,omitempty"`
+	TournamentCode  string `url:"tournamentCode,omitempty"`
+}
+
 const matchPathPart = "api/lol/%s/v2.2/match"
 
 // Get gets the match for a given matchID
@@ -275,4 +282,37 @@ func (s *MatchService) Get(ctx context.Context, matchID int64, params *GetMatchP
 		match,
 	)
 	return match, err
+}
+
+// GetForTournament gets the match details for a tournament match, params.TournamentCode is required
+func (s *MatchService) GetForTournament(ctx context.Context, matchID int64, params *GetTournamentParams) (*MatchDetail, error) {
+	if params == nil || (*params).TournamentCode == "" {
+		return nil, errors.New("Must include query params for TournamentCode")
+	}
+	match := new(MatchDetail)
+	err := s.client.getResource(
+		ctx,
+		addRegionToString(matchPathPart+"/for-tournament", s.client.region),
+		strconv.FormatInt(matchID, 10),
+		params,
+		match,
+	)
+	return match, err
+}
+
+// GetIdsByTournament gets the matchIDs for a given tournament code
+func (s *MatchService) GetIdsByTournament(ctx context.Context, tournamentCode string) (*[]int64, error) {
+	ids := new([]int64)
+	err := s.client.getResource(
+		ctx,
+		fmt.Sprintf(
+			"%s/%s/ids",
+			addRegionToString(matchPathPart+"/by-tournament", s.client.region),
+			tournamentCode,
+		),
+		"",
+		nil,
+		ids,
+	)
+	return ids, err
 }
