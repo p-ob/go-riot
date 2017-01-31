@@ -1,4 +1,4 @@
-# go-riot [![Build Status](https://travis-ci.org/p-ob/go-riot.svg?branch=master)](https://travis-ci.org/p-ob/go-riot) [![GoDoc](https://godoc.org/github.com/p-ob/go-riot/lol?status.png)](https://godoc.org/github.com/p-ob/go-riot/lol) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
+# go-riot [![Build Status](https://travis-ci.org/p-ob/go-riot.svg?branch=master)](https://travis-ci.org/p-ob/go-riot) [![GoDoc](https://godoc.org/github.com/p-ob/go-riot/lol?status.png)](https://godoc.org/github.com/p-ob/go-riot/lol)
 go-riot is a [Riot Games API](https://developer.riotgames.com/) client for Go.
 
 ## Install
